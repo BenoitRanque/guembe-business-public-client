@@ -1,6 +1,8 @@
 <template>
   <q-page class="flex flex-center">
-    <facebook-login></facebook-login>
+    <auth0-login></auth0-login>
+    <auth0-logout></auth0-logout>
+    <q-btn @click="$store.state.auth.auth.login">login</q-btn>
   </q-page>
 </template>
 
@@ -8,11 +10,13 @@
 </style>
 
 <script>
-import FacebookLogin from 'components/FacebookLogin'
+import Auth0Login from 'components/Auth0Login'
+import Auth0Logout from 'components/Auth0Logout'
 export default {
   name: 'PageIndex',
   components: {
-    FacebookLogin
+    Auth0Login,
+    Auth0Logout
   }
 }
 </script>

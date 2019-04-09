@@ -74,7 +74,6 @@ export default {
     },
     async login () {
 
-
       // const query = /* GraphQL */`query ($username: String! $password: String!) {
       //   credentials: auth_credentials (username: $username password: $password) {
       //     account {
