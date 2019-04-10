@@ -11,6 +11,14 @@
         >
           <q-icon name="mdi-menu" />
         </q-btn>
+        <q-btn
+          flat
+          dense
+          round
+          @click="$router.push('/')"
+        >
+          <q-icon name="mdi-home" />
+        </q-btn>
 
         <q-toolbar-title>
           Quasar App
