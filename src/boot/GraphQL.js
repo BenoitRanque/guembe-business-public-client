@@ -34,9 +34,7 @@ class GraphQLError {
 }
 
 export default ({ app, router, store, Vue }) => {
-  Vue.prototype.$gql = async function GraphQL (query = ``, variables = {}, options = {}) {
-    this.GraphQLError = GraphQLError
-
+  const GraphQL = async function GraphQL (query = ``, variables = {}, options = {}) {
     const defaultOptions = {
       useCredentials: true,
       role: null
@@ -77,4 +75,6 @@ export default ({ app, router, store, Vue }) => {
 
     return data
   }
+
+  Vue.prototype.$gql = GraphQL
 }
