@@ -7,8 +7,9 @@ export function authenticate ({ commit }, { provider }) {
   // https://github.com/XanderLuciano/xauth2
   // https://github.com/dgrubelic/vue-authenticate
   // redirect to auth provider
+  console.log(this)
   const state = {
-    route: '/',
+    route: this.$router.app.$route.path,
     provider
     // current application state. Use to restore application when redirected here
   }
@@ -16,12 +17,15 @@ export function authenticate ({ commit }, { provider }) {
   let baseURL = null
   const queryObject = {
     state: JSON.stringify(state),
-    redirect_uri: `${window.location.origin}/callback`
+    redirect_uri: `${window.location.origin}/OAuthSuccessCallback`
   }
 
   switch (provider) {
     case 'facebook':
       baseURL = `https://www.facebook.com/v3.2/dialog/oauth`
+      // if (this.$router.app.$q.platform.is.mobile) {
+      // }
+      queryObject.display = 'touch'
       queryObject.client_id = FACEBOOK_APP_ID
       queryObject.response_type = 'code'
       queryObject.scope = `email`
@@ -51,12 +55,6 @@ export function authenticate ({ commit }, { provider }) {
   let queryString = queryArray.join('&')
 
   window.location.href = `${baseURL}?${queryString}`
-  // const queryString = Object.entries(params)
-  //   .reduce((str, [ key, value ]) => {
-  //     str.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-  //   }, []).join('&')
-
-  // console.log(`${baseURL}?${query}`)
 }
 
 export async function login ({ commit }, { code, redirect_uri, provider }) {
@@ -65,7 +63,7 @@ export async function login ({ commit }, { code, redirect_uri, provider }) {
     client_authentication (provider: $provider redirect_uri: $redirect_uri code: $code) {
       token
       account {
-        account_id
+        client_id
         email
         name
       }
@@ -78,15 +76,32 @@ export async function login ({ commit }, { code, redirect_uri, provider }) {
     provider
   }
 
-  try {
-    const response = await this.$router.app.$gql(query, variables)
-    console.log(response)
-  } catch (error) {
-    error.display()
-    console.error(error)
-  }
+  const { client_authentication: credentials } = await this.$router.app.$gql(query, variables)
+  commit('REGISTER_CREDENTIALS', credentials)
+  // try {
+  // } catch (error) {
+  //   error.display()
+  // }
 }
 
-export async function logout (ctx, payload) {
+export async function logout ({ commit }, payload) {
+  commit('DESTROY_CREDENTIALS')
+}
 
+export async function handleOAuthSuccessCallback ({ dispatch }) {
+  const code = this.$router.app.$route.query.code
+  const state = JSON.parse(decodeURIComponent(this.$router.app.$route.query.state))
+  const { provider, route } = state
+  await dispatch('login', {
+    provider,
+    code,
+    redirect_uri: `${window.location.origin}${this.$router.app.$route.path}`
+  })
+  this.$router.push(route)
+}
+
+export async function handleOAuthFailureCallback () {
+  this.$router.app.$q.notify('login failed')
+  console.log(this.$router.app.$route)
+  this.$router.push('/')
 }

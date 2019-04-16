@@ -43,7 +43,9 @@ module.exports = function (ctx) {
         'QCard',
         'QCardSection',
         'QCardActions',
-        'QTooltip'
+        'QTooltip',
+        'QSpinner',
+        'QImg'
       ],
 
       directives: [

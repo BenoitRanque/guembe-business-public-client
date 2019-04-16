@@ -6,7 +6,8 @@ import * as getters from './getters'
 import * as mutations from './mutations'
 import * as actions from './actions'
 
-import auth from './auth'
+import oauth from './oauth'
+import khipu from './khipu'
 
 Vue.use(Vuex)
 
@@ -22,9 +23,9 @@ export default function (/* { ssrContext } */) {
     mutations,
     actions,
     modules: {
-      auth
+      oauth,
+      khipu
     },
-
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEV

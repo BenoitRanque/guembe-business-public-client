@@ -49,8 +49,8 @@ export default ({ app, router, store, Vue }) => {
       'Content-Type': 'application/json'
     }
 
-    if (options.useCredentials && store.getters.isAuthenticated) {
-      headers['Authorization'] = `Bearer ${store.state.credentials.token}`
+    if (options.useCredentials && store.getters['oauth/isAuthenticated']) {
+      headers['Authorization'] = `Bearer ${store.state['oauth/credentials'].token}`
       if (options.role) {
         headers['x-hasura-role'] = options.role
       }
@@ -76,6 +76,8 @@ export default ({ app, router, store, Vue }) => {
 
     return data
   }
+
+  GraphQL.GraphQLError = GraphQLError
 
   Vue.prototype.$gql = GraphQL
 }
