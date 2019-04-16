@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <q-img contain style="height: 60vh;" src="assets/isologo.svg" ></q-img>
+    <q-img contain style="max-height: 60vh; max-width: 60vw;" src="assets/isologo.svg" ></q-img>
   </q-page>
 </template>
 
