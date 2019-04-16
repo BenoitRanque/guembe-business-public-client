@@ -69,7 +69,8 @@ export default ({ app, router, store, Vue }) => {
 
     const { data, errors } = await response.json()
 
-    if (!response.ok) {
+    // if (!response.ok) {
+    if (!response.ok || errors) {
       throw new GraphQLError({ request, response, data, errors })
     }
 
