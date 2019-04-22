@@ -56,6 +56,12 @@
             <q-item-label>KhipuSuccessCallback</q-item-label>
           </q-item-section>
         </q-item>
+        <q-separator></q-separator>
+        <q-item clickable to="/purchase">
+          <q-item-section>
+            <q-item-label>Purchase</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 

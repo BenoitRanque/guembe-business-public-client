@@ -8,7 +8,10 @@ const routes = [
       { name: 'OAuthSuccessCallback', path: 'OAuthSuccessCallback', component: () => import('pages/Callback.vue') },
       { name: 'OAuthFailureCallback', path: 'OAuthFailureCallback', component: () => import('pages/Callback.vue') },
       { name: 'KhipuSuccessCallback', path: 'KhipuSuccessCallback', component: () => import('pages/Callback.vue') },
-      { name: 'KhipuFailureCallback', path: 'KhipuFailureCallback', component: () => import('pages/Callback.vue') }
+      { name: 'KhipuFailureCallback', path: 'KhipuFailureCallback', component: () => import('pages/Callback.vue') },
+
+      { path: 'listing', component: () => import('pages/Listing.vue') },
+      { path: 'purchase', component: () => import('pages/Purchase.vue') }
     ]
   }
 ]
