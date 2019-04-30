@@ -60,7 +60,7 @@ export function authenticate ({ commit }, { provider }) {
 export async function login ({ commit }, { code, redirect_uri, provider }) {
   // verify auth on backend
   const query = /* GraphQL */`query ($provider: OAuthProviderEnum! $redirect_uri: String! $code: String!) {
-    client_authentication (provider: $provider redirect_uri: $redirect_uri code: $code) {
+    credentials: store_authentication (provider: $provider redirect_uri: $redirect_uri code: $code) {
       token
       account {
         client_id
@@ -76,7 +76,7 @@ export async function login ({ commit }, { code, redirect_uri, provider }) {
     provider
   }
 
-  const { client_authentication: credentials } = await this.$router.app.$gql(query, variables)
+  const { credentials } = await this.$router.app.$gql(query, variables)
   commit('REGISTER_CREDENTIALS', credentials)
   // try {
   // } catch (error) {

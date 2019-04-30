@@ -50,7 +50,7 @@ export default ({ app, router, store, Vue }) => {
     }
 
     if (options.useCredentials && store.getters['oauth/isAuthenticated']) {
-      headers['Authorization'] = `Bearer ${store.state['oauth/credentials'].token}`
+      headers['Authorization'] = `Bearer ${store.state.oauth.credentials.token}`
       if (options.role) {
         headers['x-hasura-role'] = options.role
       }
