@@ -53,7 +53,7 @@
       <q-separator></q-separator>
       <div class="row q-mt-md">
         <q-space></q-space>
-        <q-input label="Cantidad a Aggregar" dense square outlined class="col-auto q-mx-xs"></q-input>
+        <q-input v-model="addToCartAmount" label="Cantidad a Aggregar" dense square outlined class="col-auto q-mx-xs"></q-input>
         <q-btn color="primary" class="col-auto">Aggregar a Carrito</q-btn>
       </div>
     </div>
@@ -77,10 +77,22 @@ export default {
   data () {
     return {
       loading: false,
-      listing: null
+      listing: null,
+      addToCartAmount: 1
     }
   },
   methods: {
+    addToCart () {
+      // this needs to happen in an action
+      // check if a cart exists in memory
+      // if yes, proceed. If not:
+      // check if a cart exists in database, if yes, load and proceed
+      // if not, create, load and proceed
+
+      // step 1: check if item already in cart. If yes, offer to add selected amount to existing amount
+
+      // step 2: add item to cart
+    },
     async loadListing (ListingId) {
       const query = /* GraphQL */`
         query ($where: store_available_listing_bool_exp!) {

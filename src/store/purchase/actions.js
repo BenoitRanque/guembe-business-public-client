@@ -1,7 +1,12 @@
-export async function handleKhipuSuccessCallback () {
-  this.$router.push('/')
+
+export async function getCart ({ dispatch, commit }, { listingId, amount }) {
+
 }
 
-export async function handleKhipuFailureCallback () {
-  this.$router.push('/')
+export async function createCart ({ dispatch, commit }, { listingId, amount }) {
+
+}
+
+export async function addToCart ({ dispatch, commit }, { listingId, amount }) {
+
 }
