@@ -10,7 +10,9 @@ const routes = [
       { name: 'KhipuSuccessCallback', path: 'KhipuSuccessCallback', component: () => import('pages/Callback.vue') },
       { name: 'KhipuFailureCallback', path: 'KhipuFailureCallback', component: () => import('pages/Callback.vue') },
 
-      { path: 'listing', component: () => import('pages/Listing.vue') },
+      // props: true means listing id will be passed as a prop to the component
+      { path: 'listing/:ListingId', props: true, component: () => import('pages/Listing.vue') },
+      { path: 'listings', component: () => import('pages/Listings.vue') },
       { path: 'purchase', component: () => import('pages/Purchase.vue') }
     ]
   }

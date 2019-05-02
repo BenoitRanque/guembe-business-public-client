@@ -5,6 +5,7 @@ module.exports = function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
+      'Session',
       'GraphQL'
     ],
 
@@ -38,6 +39,7 @@ module.exports = function (ctx) {
         'QItem',
         'QItemSection',
         'QItemLabel',
+        'QExpansionItem',
         'QInput',
         'QDialog',
         'QCard',
@@ -45,6 +47,12 @@ module.exports = function (ctx) {
         'QCardActions',
         'QTooltip',
         'QSpinner',
+        'QInnerLoading',
+        'QSeparator',
+        'QTable',
+        'QMenu',
+        'QSpace',
+        'QMarkupTable',
         'QImg'
       ],
 
@@ -54,7 +62,8 @@ module.exports = function (ctx) {
 
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'SessionStorage'
       ],
 
       iconSet: 'mdi-v3'

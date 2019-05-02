@@ -4,7 +4,42 @@
       <q-btn @click="getAvailableListings">getAvailableListings</q-btn>
     </div>
     <div v-for="(item, index) in items" :key="index">
-      <pre>{{item}}</pre>
+      <q-expansion-item
+        dense
+      >
+        <template slot="header">
+          <q-item-section>
+            <q-item-label header>
+              hello
+            </q-item-label>
+            <q-item-label caption>
+              hello
+            </q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-input outline></q-input>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn @click.stop.prevent="$q.notify('Hello')">trigger</q-btn>
+          </q-item-section>
+        </template>
+        <q-card>
+          <q-card-section>
+            <pre>{{item}}</pre>
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
+      <q-expansion-item
+        dense
+        label="Listing Details"
+        caption=""
+      >
+        <q-card>
+          <q-card-section>
+            <pre>{{item}}</pre>
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
     </div>
   </q-page>
 </template>
@@ -37,6 +72,12 @@ export default {
                 description
                 start
                 end
+                lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
+                  weekday {
+                    weekday_id
+                    weekday_name
+                  }
+                }
               }
             }
           }

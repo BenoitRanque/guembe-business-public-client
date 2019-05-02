@@ -1,3 +1,5 @@
+import { SessionStorage } from 'quasar'
+
 const FACEBOOK_APP_ID = '623814848065170'
 // const GITHUB_APP_ID = '730962c5bcb59188e9e9'
 const GOOGLE_APP_ID = '92573611030-p7p0ul4o1e36pg92i2fuobs6cupb3n4u.apps.googleusercontent.com'
@@ -9,7 +11,7 @@ export function authenticate ({ commit }, { provider }) {
   // redirect to auth provider
   console.log(this)
   const state = {
-    route: this.$router.app.$route.path,
+    route: this.$router && this.$router.app && this.$router.app.$route ? this.$router.app.$route.path : window.location.pathname,
     provider
     // current application state. Use to restore application when redirected here
   }
@@ -58,6 +60,7 @@ export function authenticate ({ commit }, { provider }) {
 }
 
 export async function login ({ commit }, { code, redirect_uri, provider }) {
+  const GraphQLError = this.$router.app.$gql.GraphQLError
   // verify auth on backend
   const query = /* GraphQL */`query ($provider: OAuthProviderEnum! $redirect_uri: String! $code: String!) {
     credentials: store_authentication (provider: $provider redirect_uri: $redirect_uri code: $code) {
@@ -76,16 +79,25 @@ export async function login ({ commit }, { code, redirect_uri, provider }) {
     provider
   }
 
-  const { credentials } = await this.$router.app.$gql(query, variables)
-  commit('REGISTER_CREDENTIALS', credentials)
-  // try {
-  // } catch (error) {
-  //   error.display()
-  // }
+  try {
+    const { credentials } = await this.$router.app.$gql(query, variables)
+
+    commit('REGISTER_CREDENTIALS', credentials)
+
+    SessionStorage.set('AuthProvider', provider)
+  } catch (error) {
+    if (error instanceof GraphQLError) {
+      error.display()
+    } else {
+      throw error
+    }
+  }
 }
 
 export async function logout ({ commit }, payload) {
   commit('DESTROY_CREDENTIALS')
+
+  SessionStorage.remove('AuthProvider')
 }
 
 export async function handleOAuthSuccessCallback ({ dispatch }) {

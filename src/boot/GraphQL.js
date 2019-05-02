@@ -33,6 +33,14 @@ class GraphQLError {
   }
 }
 
+async function GraphQLErrorHandler (error) {
+  if (error instanceof GraphQLError) {
+    error.display()
+  } else {
+    throw error
+  }
+}
+
 export default ({ app, router, store, Vue }) => {
   const GraphQL = async function GraphQL (query = ``, variables = {}, options = {}) {
     const defaultOptions = {
@@ -78,6 +86,7 @@ export default ({ app, router, store, Vue }) => {
   }
 
   GraphQL.GraphQLError = GraphQLError
+  GraphQL.handleError = GraphQLErrorHandler
 
   Vue.prototype.$gql = GraphQL
 }
