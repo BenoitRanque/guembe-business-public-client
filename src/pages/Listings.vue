@@ -43,7 +43,7 @@ export default {
     async loadAvailableListings () {
       const query = /* GraphQL */`
         query {
-          listings: store_available_listing (order_by: [{created_at: desc}]) {
+          listings: store_available_listing {
             listing_id
             public_name
             description

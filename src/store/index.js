@@ -8,6 +8,7 @@ import * as actions from './actions'
 
 import oauth from './oauth'
 import khipu from './khipu'
+import purchase from './purchase'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,8 @@ export default function (/* { ssrContext } */) {
     actions,
     modules: {
       oauth,
-      khipu
+      khipu,
+      purchase
     },
     // enable strict mode (adds overhead!)
     // for dev mode only

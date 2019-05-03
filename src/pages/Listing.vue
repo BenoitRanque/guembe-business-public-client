@@ -54,9 +54,12 @@
       <div class="row q-mt-md">
         <q-space></q-space>
         <q-input v-model="addToCartAmount" label="Cantidad a Aggregar" dense square outlined class="col-auto q-mx-xs"></q-input>
-        <q-btn color="primary" class="col-auto">Aggregar a Carrito</q-btn>
+        <q-btn @click="addToCurrentPurchase" color="primary" class="col-auto">Aggregar a Carrito</q-btn>
       </div>
     </div>
+    <q-inner-loading :showing="loading">
+      <q-spinner></q-spinner>
+    </q-inner-loading>
   </q-page>
 </template>
 
@@ -82,7 +85,20 @@ export default {
     }
   },
   methods: {
-    addToCart () {
+    async addToCurrentPurchase () {
+      try {
+        this.loading = true
+        const response = await this.$store.dispatch('purchase/addToCurrentPurchase', {
+          amount: Number(this.addToCartAmount),
+          listingId: this.ListingId
+        })
+        console.log(response)
+        this.$q.notify({ color: 'positive', icon: 'mdi-check', message: 'Articulo aggregado correctamente' })
+      } catch (error) {
+        this.$gql.handleError(error)
+      } finally {
+        this.loading = false
+      }
       // this needs to happen in an action
       // check if a cart exists in memory
       // if yes, proceed. If not:
