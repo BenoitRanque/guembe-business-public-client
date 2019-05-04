@@ -23,14 +23,14 @@ export async function createCurrentPurchase ({ commit }) {
   const query = /* GraphQL */`
     mutation {
       purchase: insert_store_purchase (objects: {}) {
-        currentPurchase: returning {
+        returning {
           purchase_id
         }
       }
     }
   `
 
-  const { purchase: { currentPurchase } } = await this.$router.app.$gql(query)
+  const { purchase: { returning: [ currentPurchase ] } } = await this.$router.app.$gql(query)
 
   return currentPurchase
 }

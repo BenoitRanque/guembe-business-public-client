@@ -62,6 +62,11 @@
             <q-item-label>Purchase</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/purchases">
+          <q-item-section>
+            <q-item-label>Purchases</q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable to="/listings">
           <q-item-section>
             <q-item-label>Listings</q-item-label>

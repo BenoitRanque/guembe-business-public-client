@@ -94,7 +94,7 @@ export async function login ({ commit }, { code, redirect_uri, provider }) {
   }
 }
 
-export async function logout ({ commit }, payload) {
+export async function logout ({ commit }) {
   commit('DESTROY_CREDENTIALS')
 
   SessionStorage.remove('AuthProvider')

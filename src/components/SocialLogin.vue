@@ -3,6 +3,7 @@
     <q-dialog v-model="showSession">
       <q-card>
         <q-card-section>
+          <q-btn @click="logout(), $router.push('/')">Logout</q-btn>
           <pre>
             {{$store.state}}
           </pre>
@@ -46,7 +47,7 @@ export default {
     ...mapGetters('oauth', ['isAuthenticated'])
   },
   methods: {
-    ...mapActions('oauth', ['authenticate'])
+    ...mapActions('oauth', ['authenticate', 'logout'])
   }
 }
 </script>
