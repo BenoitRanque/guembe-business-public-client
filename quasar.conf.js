@@ -5,7 +5,7 @@ module.exports = function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
-      'Session',
+      'AuthGuard',
       'GraphQL'
     ],
 
@@ -28,6 +28,7 @@ module.exports = function (ctx) {
       components: [
         'QLayout',
         'QHeader',
+        'QBanner',
         'QDrawer',
         'QPageContainer',
         'QPage',

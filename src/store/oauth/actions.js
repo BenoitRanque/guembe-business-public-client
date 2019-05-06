@@ -4,14 +4,17 @@ const FACEBOOK_APP_ID = '623814848065170'
 // const GITHUB_APP_ID = '730962c5bcb59188e9e9'
 const GOOGLE_APP_ID = '92573611030-p7p0ul4o1e36pg92i2fuobs6cupb3n4u.apps.googleusercontent.com'
 
-export function authenticate ({ commit }, { provider }) {
+export function authenticate ({ commit }, { provider, route = null }) {
   // references
   // https://github.com/XanderLuciano/xauth2
   // https://github.com/dgrubelic/vue-authenticate
   // redirect to auth provider
-  console.log(this)
+  if (route === null) {
+    route = this.$router && this.$router.app && this.$router.app.$route ? this.$router.app.$route.path : window.location.pathname
+  }
+
   const state = {
-    route: this.$router && this.$router.app && this.$router.app.$route ? this.$router.app.$route.path : window.location.pathname,
+    route,
     provider
     // current application state. Use to restore application when redirected here
   }

@@ -1,9 +1,25 @@
 <template>
   <q-page padding>
-    <q-input v-model="nit" label="NIT"></q-input>
-    <q-input v-model="razonSocial" label="RAZON SOCIAL"></q-input>
-    <q-btn @click="checkout">Finalizar Compra</q-btn>
+    <q-banner v-if="someItemsNoLongerAvailable" class="bg-warning text-bold" rounded inline-actions>
+      Algunos articulos ya no se encuentran disponibles.
+      Debe quitarlos antes de proceder con la compra.
+      <template v-slot:action>
+        <q-btn @click="removeUnavailableListings" flat label="quitar"></q-btn>
+      </template>
+    </q-banner>
     <pre>{{purchase}}</pre>
+    <q-separator class="q-my-md"></q-separator>
+    <div class="row q-gutter-x-sm">
+      <div class="col">
+        <q-input outlined dense v-model="nit" label="NIT"></q-input>
+      </div>
+      <div class="col">
+        <q-input outlined dense v-model="razonSocial" label="RAZON SOCIAL"></q-input>
+      </div>
+    </div>
+    <div class="text-right q-my-md">
+      <q-btn color="primary" @click="checkout">Finalizar Compra</q-btn>
+    </div>
     <q-inner-loading :showing="loading">
       <q-spinner></q-spinner>
     </q-inner-loading>
@@ -19,6 +35,13 @@ export default {
       razonSocial: 'SIN NOMBRE',
       purchase: null,
       loading: false
+    }
+  },
+  computed: {
+    someItemsNoLongerAvailable () {
+      if (!this.purchase) return false
+
+      return this.purchase.purchase_listings.some(({ listing }) => !listing.available_listing)
     }
   },
   methods: {
@@ -98,6 +121,9 @@ export default {
               purchase_listings {
                 quantity
                 listing {
+                  available_listing {
+                    listing_id
+                  }
                   listing_id
                   public_name
                   description
@@ -140,6 +166,37 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    async removeUnavailableListings () {
+      const query = /* GraphQL */`
+        mutation {
+          listings: delete_store_purchase_listing (where: {
+            listing: {
+              available_listing: {
+                listing_id: {
+                  _is_null: true
+                }
+              }
+            }
+          }) {
+            removed: affected_rows
+          }
+        }
+      `
+
+      try {
+        this.loading = true
+
+        const { listings: { removed } } = await this.$gql(query)
+
+        this.$gql.notify(`Se removieron ${removed} items`)
+      } catch (error) {
+        this.$gql.handleError(error)
+      } finally {
+        this.loading = true
+      }
+
+      this.getCurrentPurchase()
     }
   },
   mounted () {

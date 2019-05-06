@@ -13,8 +13,8 @@ const routes = [
       // props: true means listing id will be passed as a prop to the component
       { path: 'listing/:ListingId', props: true, component: () => import('pages/Listing.vue') },
       { path: 'listings', component: () => import('pages/Listings.vue') },
-      { path: 'purchase', component: () => import('pages/Purchase.vue') },
-      { path: 'purchases', component: () => import('pages/Purchases.vue') }
+      { path: 'purchase', component: () => import('pages/Purchase.vue'), meta: { requireAuthentication: true } },
+      { path: 'purchases', component: () => import('pages/Purchases.vue'), meta: { requireAuthentication: true } }
     ]
   }
 ]

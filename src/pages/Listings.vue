@@ -43,17 +43,19 @@ export default {
     async loadAvailableListings () {
       const query = /* GraphQL */`
         query {
-          listings: store_available_listing {
-            listing_id
-            public_name
-            description
-            products: available_listing_products {
-              product {
-                public_name
-                description
+          available: store_available_listing {
+            listing {
+              listing_id
+              public_name
+              description
+              products: listing_products {
+                product {
+                  public_name
+                  description
+                }
+                quantity
+                price
               }
-              quantity
-              price
             }
           }
         }
@@ -61,8 +63,8 @@ export default {
       try {
         this.loading = true
 
-        const { listings } = await this.$gql(query)
-        this.listings = listings
+        const { available } = await this.$gql(query)
+        this.listings = available.map(({ listing }) => listing)
       } catch (error) {
         this.$gql.handleError(error)
       } finally {

@@ -15,7 +15,16 @@
     <q-dialog v-model="showLogin">
       <q-card>
         <q-card-section>
+          <div class="text-h6 text-center">
+            Bienvenido
+          </div>
+          <div class="text-subtitle2 text-center">
+            Por favor inicia session
+          </div>
+        </q-card-section>
+        <q-card-section>
           <q-btn
+            class="full-width"
             @click="authenticate({ provider: 'google' })"
             color="red"
             icon="mdi-google"
@@ -23,6 +32,7 @@
         </q-card-section>
         <q-card-section>
           <q-btn
+            class="full-width"
             @click="authenticate({ provider: 'facebook' })"
             color="blue"
             icon="mdi-facebook"
@@ -47,7 +57,16 @@ export default {
     ...mapGetters('oauth', ['isAuthenticated'])
   },
   methods: {
-    ...mapActions('oauth', ['authenticate', 'logout'])
+    ...mapActions('oauth', ['authenticate', 'logout']),
+    authenticationRequested () {
+      this.showLogin = true
+    }
+  },
+  created () {
+    this.$root.$on('AUTHENTICATION_REQUIRED', this.authenticationRequested)
+  },
+  beforeDestroy () {
+    this.$root.$off('AUTHENTICATION_REQUIRED', this.authenticationRequested)
   }
 }
 </script>
