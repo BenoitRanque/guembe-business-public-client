@@ -1,6 +1,9 @@
 <template>
   <q-page padding>
-    <listing-display v-if="listing" :listing="listing" class="q-shadow-none">
+    <available-listing v-if="listing" :listing="listing">
+
+    </available-listing>
+    <!-- <listing-display v-if="listing" :listing="listing" class="q-shadow-none">
       <template v-slot:footer>
         <q-separator></q-separator>
         <q-card-section class="row">
@@ -12,17 +15,17 @@
     </listing-display>
     <q-inner-loading :showing="loading">
       <q-spinner></q-spinner>
-    </q-inner-loading>
+    </q-inner-loading> -->
   </q-page>
 </template>
 
 <script>
-import ListingDisplay from 'components/ListingDisplay'
+import AvailableListing from 'components/AvailableListing'
 
 export default {
   name: 'Listing',
   components: {
-    ListingDisplay
+    AvailableListing
   },
   props: {
     ListingId: {

@@ -1,7 +1,13 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <q-list>
+    <available-listing
+      class="q-mb-md"
+      v-for="(listing, index) in listings"
+      :key="index"
+      :listing="listing"
+    ></available-listing>
+    <!-- <q-list>
       <q-item
         v-for="(listing, index) in listings"
         :key="index"
@@ -20,7 +26,7 @@
           BS {{getListingPrice(listing)}}
         </q-item-section>
       </q-item>
-    </q-list>
+    </q-list> -->
     <q-inner-loading :showing="loading">
       <q-spinner></q-spinner>
     </q-inner-loading>
@@ -28,8 +34,11 @@
 </template>
 
 <script>
+import AvailableListing from 'components/AvailableListing'
+
 export default {
   name: 'Listings',
+  components: { AvailableListing },
   data () {
     return {
       loading: false,
@@ -43,18 +52,28 @@ export default {
     async loadAvailableListings () {
       const query = /* GraphQL */`
         query {
-          available: store_available_listing {
-            listing {
-              listing_id
-              public_name
-              description
-              products: listing_products {
-                product {
-                  public_name
-                  description
+          listings: store_listing (where: { available_listing: { listing_id: { _is_null: false } } }) {
+            listing_id
+            public_name
+            description
+            products: listing_products {
+              product {
+                public_name
+                description
+              }
+              quantity
+              price
+              lifetime {
+                public_name
+                description
+                start
+                end
+                lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
+                  weekday {
+                    weekday_id
+                    weekday_name
+                  }
                 }
-                quantity
-                price
               }
             }
           }
@@ -63,8 +82,8 @@ export default {
       try {
         this.loading = true
 
-        const { available } = await this.$gql(query)
-        this.listings = available.map(({ listing }) => listing)
+        const { listings } = await this.$gql(query)
+        this.listings = listings
       } catch (error) {
         this.$gql.handleError(error)
       } finally {

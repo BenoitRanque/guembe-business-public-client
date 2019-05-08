@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card v-bind="$attrs">
     <slot name="header"/>
     <q-card-section class="text-subtitle2 row">
       {{listing.public_name}}

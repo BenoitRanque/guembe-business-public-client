@@ -35,9 +35,19 @@ export async function createCurrentPurchase ({ commit }) {
   return currentPurchase
 }
 
-export async function addToCurrentPurchase ({ dispatch }, { listingId, amount }) {
-  const { purchase_id } = await dispatch('getOrCreateCurrentPurchase')
+export async function getCurrentPurchaseId ({ state, dispatch, commit }) {
+  if (state.purchase) {
+    return state.purchase.purchase_id
+  }
 
+  const purchase = await dispatch('getOrCreateCurrentPurchase')
+
+  commit('CURRENT_PURCHASE', purchase)
+
+  return state.purchase.purchase_id
+}
+
+export async function addToCurrentPurchase ({ dispatch }, { listingId, amount }) {
   const query = /* GraphQL */`
     mutation createListing ($objects: [store_purchase_listing_insert_input!]!) {
       insert_store_purchase_listing (objects: $objects on_conflict: {
@@ -51,7 +61,7 @@ export async function addToCurrentPurchase ({ dispatch }, { listingId, amount })
 
   const variables = {
     objects: {
-      purchase_id,
+      purchase_id: await dispatch('getCurrentPurchaseId'),
       listing_id: listingId,
       quantity: amount
     }
@@ -62,14 +72,31 @@ export async function addToCurrentPurchase ({ dispatch }, { listingId, amount })
   return response
 }
 
-export async function getCurrentPurchaseId ({ state, dispatch, commit }) {
-  if (state.purchase) {
-    return state.purchase.purchase_id
+export async function removeFromCurrentPurchase ({ dispatch }, { listingId }) {
+  const query = /* GraphQL */`
+    mutation ($where: store_purchase_listing_bool_exp!) {
+      delete_store_purchase_listing (where: $where) {
+        affected_rows
+      }
+    }
+  `
+
+  const variables = {
+    where: {
+      listing_id: {
+        _eq: listingId
+      },
+      purchase_id: {
+        _eq: await dispatch('getCurrentPurchaseId')
+      }
+    }
   }
 
-  const purchase = await dispatch('getOrCreateCurrentPurchase')
+  const response = this.$router.app.$gql(query, variables)
 
-  commit('CURRENT_PURCHASE', purchase)
+  return response
+}
 
-  return state.purchase.purchase_id
+export async function loadCurrentPurchase ({ dispatch, commit }, { purchaseId }) {
+
 }
