@@ -1,79 +1,53 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="glossy">
+    <q-header elevated class="bg-secondary">
       <q-toolbar>
         <q-btn
+          stretch
           flat
           dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-        >
-          <q-icon name="mdi-menu" />
-        </q-btn>
-        <q-btn
-          flat
-          dense
-          round
           @click="$router.push('/')"
         >
-          <q-icon name="mdi-home" />
+          <q-avatar rounded>
+            <img src="statics/icons/icon-256x256.png">
+          </q-avatar>
         </q-btn>
-
+        <q-separator dark vertical inset />
+        <!-- <q-space></q-space> -->
         <q-toolbar-title>
-          Quasar App
+          Biocentro Guembe
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-separator dark vertical inset />
+        <q-btn
+          stretch
+          @click="$router.push('/cart')"
+          flat
+          icon="mdi-cart-outline"
+          dense
+          v-if="$store.state.cart.listings.length"
+        >
+          <q-badge floating color="red">
+            {{$store.state.cart.listings.length}}
+          </q-badge>
+          <q-tooltip>
+            {{$store.state.cart.listings.length}} articulos en carrito
+          </q-tooltip>
+        </q-btn>
+        <q-btn-dropdown stretch flat label="Mi Cuenta">
+          <q-list>
+            <q-item>
+              <q-item-section>
+                hello
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+        <q-separator dark vertical inset />
+
         <social-login></social-login>
       </q-toolbar>
     </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      bordered
-      content-class="bg-grey-2"
-    >
-      <q-list>
-        <q-item-label header>Essential Links</q-item-label>
-        <q-item clickable to="/OAuthFailureCallback">
-          <q-item-section>
-            <q-item-label>OAuthFailureCallback</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable to="/OAuthSuccessCallback">
-          <q-item-section>
-            <q-item-label>OAuthSuccessCallback</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable to="/KhipuFailureCallback">
-          <q-item-section>
-            <q-item-label>KhipuFailureCallback</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable to="/KhipuSuccessCallback">
-          <q-item-section>
-            <q-item-label>KhipuSuccessCallback</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-separator></q-separator>
-        <q-item clickable to="/purchase">
-          <q-item-section>
-            <q-item-label>Purchase</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable to="/purchases">
-          <q-item-section>
-            <q-item-label>Purchases</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable to="/listings">
-          <q-item-section>
-            <q-item-label>Listings</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -91,7 +65,6 @@ export default {
   },
   data () {
     return {
-      leftDrawerOpen: false
     }
   }
 }

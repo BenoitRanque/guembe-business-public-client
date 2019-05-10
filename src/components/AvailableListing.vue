@@ -1,21 +1,21 @@
 <template>
   <listing-display :listing="listing" v-bind="$attrs">
-    <template v-slot:header v-if="listingAlreadyInCurrentPurchase">
+    <template v-slot:header v-if="listingAlreadyInCart">
       <q-card-section>
         <q-banner class="bg-positive" dense rounded>
-          Este articulo ya se encuentra en la compra actual
+          Este articulo ya se encuentra en el carrito
         </q-banner>
       </q-card-section>
     </template>
-    <template v-slot:footer v-if="listingAlreadyInCurrentPurchase">
+    <template v-slot:footer v-if="listingAlreadyInCart">
       <q-separator></q-separator>
       <q-card-section class="row">
-        <q-btn @click="removeFromCurrentPurchase" color="negative" class="col-auto">
+        <q-btn @click="removeFromCart" color="negative" class="col-auto">
           Quitar
         </q-btn>
         <q-space></q-space>
-        <q-input type="number" v-model="amount" :label="`Cantidad en carrito: ${amountInCurrentPurchase}`" dense square outlined class="col-auto q-mx-xs"></q-input>
-        <q-btn :disable="Number(amount) === Number(amountInCurrentPurchase) || Number(amount) < 1" @click="updateInCurrentPurchase" color="primary" class="col-auto">Guardar Cambios</q-btn>
+        <q-input type="number" v-model="amount" :label="`Cantidad en carrito: ${amountInCart}`" dense square outlined class="col-auto q-mx-xs"></q-input>
+        <q-btn :disable="Number(amount) === Number(amountInCart) || Number(amount) < 1" @click="updateInCart" color="primary" class="col-auto">Guardar Cambios</q-btn>
       </q-card-section>
     </template>
     <template v-slot:footer v-else>
@@ -23,7 +23,7 @@
       <q-card-section class="row">
         <q-space></q-space>
         <q-input type="number" v-model="amount" label="Cantidad a Aggregar" dense square outlined class="col-auto q-mx-xs"></q-input>
-        <q-btn @click="addToCurrentPurchase" color="primary" class="col-auto">Aggregar a Carrito</q-btn>
+        <q-btn @click="authProtected(addToCart)" color="primary" class="col-auto">Aggregar a Carrito</q-btn>
       </q-card-section>
       <q-inner-loading :showing="loading">
         <q-spinner></q-spinner>
@@ -34,6 +34,7 @@
 
 <script>
 import ListingDisplay from 'components/ListingDisplay'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'AvailableListing',
@@ -51,11 +52,11 @@ export default {
     }
   },
   computed: {
-    listingAlreadyInCurrentPurchase () {
+    listingAlreadyInCart () {
       return this.$store.getters['cart/listingIsInCart'](this.listing.listing_id)
     },
-    amountInCurrentPurchase () {
-      if (!this.listingAlreadyInCurrentPurchase) {
+    amountInCart () {
+      if (!this.listingAlreadyInCart) {
         return null
       }
 
@@ -63,7 +64,8 @@ export default {
     }
   },
   methods: {
-    async removeFromCurrentPurchase () {
+    ...mapActions('oauth', ['authProtected']),
+    async removeFromCart () {
       try {
         this.loading = true
         await this.$store.dispatch('cart/removeFromCart', {
@@ -76,12 +78,12 @@ export default {
         this.loading = false
       }
     },
-    async updateInCurrentPurchase () {
+    async updateInCart () {
       try {
         this.loading = true
         await this.$store.dispatch('cart/addToCart', {
-          amount: Number(this.amount),
-          listingId: this.listing.listing_id
+          quantity: Number(this.amount),
+          listing_id: this.listing.listing_id
         })
         this.$q.notify({ color: 'positive', icon: 'mdi-check', message: 'Cantidad modificada exitosamente' })
       } catch (error) {
@@ -90,12 +92,12 @@ export default {
         this.loading = false
       }
     },
-    async addToCurrentPurchase () {
+    async addToCart () {
       try {
         this.loading = true
         await this.$store.dispatch('cart/addToCart', {
-          amount: Number(this.amount),
-          listingId: this.listing.listing_id
+          quantity: Number(this.amount),
+          listing_id: this.listing.listing_id
         })
         this.$q.notify({ color: 'positive', icon: 'mdi-check', message: 'Articulo aggregado exitosamente' })
       } catch (error) {
@@ -103,6 +105,11 @@ export default {
       } finally {
         this.loading = false
       }
+    }
+  },
+  mounted () {
+    if (this.listingAlreadyInCart) {
+      this.amount = this.amountInCart
     }
   }
 }

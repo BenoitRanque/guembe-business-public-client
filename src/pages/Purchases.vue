@@ -1,11 +1,29 @@
 <template>
   <q-page padding>
-    <q-btn @click="loadPurchases">UPDATE</q-btn>
-    <template v-if="purchases">
-      <div v-for="(purchase, index) in purchases" :key="index">
-        <q-btn @click="verifyPaymentStatus(purchase.payment.payment_id)">Verify Payment Status</q-btn>
-        <pre>{{purchase}}</pre>
-      </div>
+    <template v-if="purchases && purchases.length">
+      <q-list>
+        <q-item :to="`/purchase/${purchase.purchase_id}`" v-for="(purchase, index) in purchases" :key="index">
+          <q-item-section>
+            <q-item-label :lines="1">
+              {{purchase.buyer_business_name}} : {{purchase.buyer_tax_identification_number}}
+            </q-item-label>
+            <q-item-label caption :lines="1">
+              {{formatDate(purchase.created_at, 'DD/MM/YYYY')}}
+            </q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            BS {{Number(purchase.payment.amount / 100).toFixed(2)}}
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </template>
+    <template v-else>
+      <q-banner rounded  class="bg-positive" inline-actions>
+        Aun no tiene niguna compra realizada
+        <template v-slot:action>
+          <q-btn @click="$router.push('/listings')" flat label="Ir a tienda"></q-btn>
+        </template>
+      </q-banner>
     </template>
     <q-inner-loading :showing="loading">
       <q-spinner></q-spinner>
@@ -14,6 +32,9 @@
 </template>
 
 <script>
+import { date } from 'quasar'
+const { formatDate } = date
+
 export default {
   name: 'Purchase',
   data () {
@@ -23,50 +44,19 @@ export default {
     }
   },
   methods: {
-    async verifyPaymentStatus (payment_id) {
-      const query = /* GraphQL */`
-        mutation ($payment_id: uuid!) {
-          payment: verify_payment_status (payment_id: $payment_id) {
-            name
-            description
-          }
-        }
-      `
-      const variables = {
-        payment_id
-      }
-
-      try {
-        this.loading = true
-
-        await this.$gql(query, variables)
-      } catch (error) {
-        this.$gql.handleError(error)
-      } finally {
-        this.loading = false
-        this.loadPurchases()
-      }
-    },
+    formatDate,
     async loadPurchases () {
       const query = /* GraphQL */`
         query getPurchases {
-          purchases: store_purchase {
+          purchases: store_purchase (order_by: { created_at: desc }) {
+            purchase_id
             buyer_business_name
             buyer_tax_identification_number
+            created_at
             payment {
-              payment_id
+              amount
               status
-            }
-            invoices {
-              izi_link
-              izi_timestamp
-            }
-            purchased_products {
-              product {
-                public_name
-                description
-              }
-              lifetime {
+              payment_status {
                 description
               }
             }

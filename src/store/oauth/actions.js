@@ -1,7 +1,6 @@
 import { SessionStorage } from 'quasar'
 
 const FACEBOOK_APP_ID = '623814848065170'
-// const GITHUB_APP_ID = '730962c5bcb59188e9e9'
 const GOOGLE_APP_ID = '92573611030-p7p0ul4o1e36pg92i2fuobs6cupb3n4u.apps.googleusercontent.com'
 
 export function authenticate ({ commit }, { provider, route = null }) {
@@ -62,8 +61,7 @@ export function authenticate ({ commit }, { provider, route = null }) {
   window.location.href = `${baseURL}?${queryString}`
 }
 
-export async function login ({ commit }, { code, redirect_uri, provider }) {
-  const GraphQLError = this.$router.app.$gql.GraphQLError
+export async function login ({ commit, dispatch }, { code, redirect_uri, provider }) {
   // verify auth on backend
   const query = /* GraphQL */`query ($provider: OAuthProviderEnum! $redirect_uri: String! $code: String!) {
     credentials: store_authentication (provider: $provider redirect_uri: $redirect_uri code: $code) {
@@ -89,12 +87,10 @@ export async function login ({ commit }, { code, redirect_uri, provider }) {
 
     SessionStorage.set('AuthProvider', provider)
   } catch (error) {
-    if (error instanceof GraphQLError) {
-      error.display()
-    } else {
-      throw error
-    }
+    this.$router.app.$gql.handleError(error)
   }
+
+  dispatch('cart/loadCart', {}, { root: true })
 }
 
 export async function logout ({ commit }) {
@@ -116,7 +112,15 @@ export async function handleOAuthSuccessCallback ({ dispatch }) {
 }
 
 export async function handleOAuthFailureCallback () {
-  this.$router.app.$q.notify('login failed')
-  console.log(this.$router.app.$route)
-  this.$router.push('/')
+  const state = JSON.parse(decodeURIComponent(this.$router.app.$route.query.state))
+  const { route } = state
+  this.$router.app.$q.notify({ color: 'negative', message: 'Error de inicio de session' })
+  this.$router.push(route)
+}
+
+export function authProtected ({ getters }, callback) {
+  if (getters.isAuthenticated) {
+    return callback()
+  }
+  this.$router.app.$root.$emit('AUTHENTICATION_REQUIRED')
 }

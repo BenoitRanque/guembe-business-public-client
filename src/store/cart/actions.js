@@ -6,10 +6,16 @@ export async function loadCart ({ commit }) {
         listing_id
         quantity
         listing {
+          available_listing {
+            listing_id
+          },
+          listing_stock {
+            remaining_stock
+          }
           listing_id
           public_name
           description
-          products: listing_products {
+          listing_products {
             product {
               public_name
               description
@@ -42,7 +48,7 @@ export async function loadCart ({ commit }) {
   return cart
 }
 
-export async function addToCart ({ dispatch }, { listingId, amount }) {
+export async function addToCart ({ dispatch }, objects) {
   const query = /* GraphQL */`
     mutation createListing ($objects: [store_cart_listing_insert_input!]!) {
       insert_store_cart_listing (objects: $objects on_conflict: {
@@ -55,10 +61,7 @@ export async function addToCart ({ dispatch }, { listingId, amount }) {
   `
 
   const variables = {
-    objects: {
-      listing_id: listingId,
-      quantity: amount
-    }
+    objects
   }
 
   await this.$router.app.$gql(query, variables)

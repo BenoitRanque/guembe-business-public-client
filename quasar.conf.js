@@ -54,7 +54,10 @@ module.exports = function (ctx) {
         'QMenu',
         'QSpace',
         'QMarkupTable',
-        'QImg'
+        'QImg',
+        'QBadge',
+        'QAvatar',
+        'QBtnDropdown'
       ],
 
       directives: [

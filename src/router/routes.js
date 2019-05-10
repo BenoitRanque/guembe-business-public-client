@@ -2,18 +2,16 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MyLayout.vue'),
+    component: () => import('layouts/ClientLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-      { name: 'OAuthSuccessCallback', path: 'OAuthSuccessCallback', component: () => import('pages/Callback.vue') },
-      { name: 'OAuthFailureCallback', path: 'OAuthFailureCallback', component: () => import('pages/Callback.vue') },
-      { name: 'KhipuSuccessCallback', path: 'KhipuSuccessCallback', component: () => import('pages/Callback.vue') },
-      { name: 'KhipuFailureCallback', path: 'KhipuFailureCallback', component: () => import('pages/Callback.vue') },
-
+      { name: 'OAuthSuccessCallback', path: 'OAuthSuccessCallback', component: () => import('pages/OAuthCallback.vue') },
+      { name: 'OAuthFailureCallback', path: 'OAuthFailureCallback', component: () => import('pages/OAuthCallback.vue') },
       // props: true means listing id will be passed as a prop to the component
       { path: 'listing/:ListingId', props: true, component: () => import('pages/Listing.vue') },
       { path: 'listings', component: () => import('pages/Listings.vue') },
-      { path: 'purchase', component: () => import('pages/Purchase.vue'), meta: { requireAuthentication: true } },
+      { path: 'cart', component: () => import('pages/Cart.vue'), meta: { requireAuthentication: true } },
+      { path: 'purchase/:PurchaseId', props: true, component: () => import('pages/Purchase.vue'), meta: { requireAuthentication: true } },
       { path: 'purchases', component: () => import('pages/Purchases.vue'), meta: { requireAuthentication: true } }
     ]
   }

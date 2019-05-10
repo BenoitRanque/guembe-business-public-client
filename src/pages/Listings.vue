@@ -1,19 +1,17 @@
 <template>
   <q-page padding>
-    <!-- content -->
-    <available-listing
-      class="q-mb-md"
-      v-for="(listing, index) in listings"
-      :key="index"
-      :listing="listing"
-    ></available-listing>
-    <!-- <q-list>
+    <q-list>
       <q-item
         v-for="(listing, index) in listings"
         :key="index"
         clickable
         :to="`/listing/${listing.listing_id}`"
       >
+        <q-item-section avatar>
+          <q-avatar rounded>
+            <img src="statics/icons/icon-256x256.png">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>
           <q-item-label :lines="1">
             {{listing.public_name}}
@@ -26,7 +24,7 @@
           BS {{getListingPrice(listing)}}
         </q-item-section>
       </q-item>
-    </q-list> -->
+    </q-list>
     <q-inner-loading :showing="loading">
       <q-spinner></q-spinner>
     </q-inner-loading>
@@ -34,11 +32,9 @@
 </template>
 
 <script>
-import AvailableListing from 'components/AvailableListing'
 
 export default {
   name: 'Listings',
-  components: { AvailableListing },
   data () {
     return {
       loading: false,
@@ -47,7 +43,7 @@ export default {
   },
   methods: {
     getListingPrice (listing) {
-      return listing.products.reduce((subtotal, { price, quantity }) => subtotal + ((price / 100) * quantity), 0).toFixed(2)
+      return listing.listing_products.reduce((subtotal, { price, quantity }) => subtotal + ((price / 100) * quantity), 0).toFixed(2)
     },
     async loadAvailableListings () {
       const query = /* GraphQL */`
@@ -56,25 +52,9 @@ export default {
             listing_id
             public_name
             description
-            products: listing_products {
-              product {
-                public_name
-                description
-              }
+            listing_products {
               quantity
               price
-              lifetime {
-                public_name
-                description
-                start
-                end
-                lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
-                  weekday {
-                    weekday_id
-                    weekday_name
-                  }
-                }
-              }
             }
           }
         }

@@ -41,30 +41,6 @@ export default {
     }
   },
   methods: {
-    async addToCurrentPurchase () {
-      try {
-        this.loading = true
-        const response = await this.$store.dispatch('purchase/addToCurrentPurchase', {
-          amount: Number(this.addToCartAmount),
-          listingId: this.ListingId
-        })
-        console.log(response)
-        this.$q.notify({ color: 'positive', icon: 'mdi-check', message: 'Articulo aggregado correctamente' })
-      } catch (error) {
-        this.$gql.handleError(error)
-      } finally {
-        this.loading = false
-      }
-      // this needs to happen in an action
-      // check if a cart exists in memory
-      // if yes, proceed. If not:
-      // check if a cart exists in database, if yes, load and proceed
-      // if not, create, load and proceed
-
-      // step 1: check if item already in cart. If yes, offer to add selected amount to existing amount
-
-      // step 2: add item to cart
-    },
     async loadListing (ListingId) {
       const query = /* GraphQL */`
         query ($listing_id: uuid!) {
@@ -72,7 +48,7 @@ export default {
             listing_id
             public_name
             description
-            products: listing_products {
+            listing_products {
               product {
                 public_name
                 description

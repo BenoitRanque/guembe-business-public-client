@@ -7,7 +7,6 @@ import * as mutations from './mutations'
 import * as actions from './actions'
 
 import oauth from './oauth'
-import khipu from './khipu'
 import cart from './cart'
 
 Vue.use(Vuex)
@@ -25,7 +24,6 @@ export default function (/* { ssrContext } */) {
     actions,
     modules: {
       oauth,
-      khipu,
       cart
     },
     // enable strict mode (adds overhead!)

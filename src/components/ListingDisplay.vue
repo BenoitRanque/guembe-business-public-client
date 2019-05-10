@@ -4,7 +4,7 @@
     <q-card-section class="text-subtitle2 row">
       {{listing.public_name}}
       <q-space></q-space>
-      Bs {{listing.products.reduce((subtotal, { price, quantity }) => subtotal + ((price / 100) * quantity), 0).toFixed(2)}}
+      Bs {{listing.listing_products.reduce((subtotal, { price, quantity }) => subtotal + ((price / 100) * quantity), 0).toFixed(2)}}
     </q-card-section>
     <q-card-section class="text-caption">
       {{listing.description}}
@@ -34,7 +34,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(product, index) in listing.products" :key="index">
+            <tr v-for="(product, index) in listing.listing_products" :key="index">
               <td>
                 <div class="text-body2">
                   {{product.product.public_name}}
