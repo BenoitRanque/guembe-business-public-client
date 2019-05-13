@@ -64,7 +64,7 @@ export function authenticate ({ commit }, { provider, route = null }) {
 export async function login ({ commit, dispatch }, { code, redirect_uri, provider }) {
   // verify auth on backend
   const query = /* GraphQL */`query ($provider: OAuthProviderEnum! $redirect_uri: String! $code: String!) {
-    credentials: store_authentication (provider: $provider redirect_uri: $redirect_uri code: $code) {
+    credentials: client_open_authentication (provider: $provider redirect_uri: $redirect_uri code: $code) {
       token
       account {
         client_id

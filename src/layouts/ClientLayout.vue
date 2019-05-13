@@ -65,7 +65,8 @@
         <template v-else>
           <q-separator dark vertical inset />
           <q-btn-dropdown flat stretch label="Iniciar Session" auto-close>
-            <q-list>
+            <client-authentication></client-authentication>
+            <!-- <q-list>
               <q-item-label header>
                 Opciones de inicio de session
               </q-item-label>
@@ -98,7 +99,7 @@
                   </q-btn>
                 </q-item-section>
               </q-item>
-            </q-list>
+            </q-list> -->
           </q-btn-dropdown>
         </template>
       </q-toolbar>
@@ -109,7 +110,8 @@
     </q-page-container>
 
     <q-dialog v-model="showLoginDialog">
-      <q-card>
+      <client-authentication></client-authentication>
+      <!-- <q-card>
         <q-card-section>
           <div class="text-h6 text-center">
             Bienvenido
@@ -134,15 +136,19 @@
             icon="mdi-facebook"
           >Iniciar Session Con Facebook</q-btn>
         </q-card-section>
-      </q-card>
+      </q-card> -->
     </q-dialog>
   </q-layout>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import ClientAuthentication from 'components/ClientAuthentication'
 export default {
   name: 'ClientLayout',
+  components: {
+    ClientAuthentication
+  },
   data () {
     return {
       showLoginDialog: false
