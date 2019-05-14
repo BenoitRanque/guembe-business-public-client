@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="bg-secondary">
-      <q-toolbar>
+    <q-header elevated>
+      <q-toolbar class="bg-white text-primary">
         <q-btn
           stretch
           flat
@@ -12,14 +12,14 @@
             <img src="statics/icons/icon-256x256.png">
           </q-avatar>
         </q-btn>
-        <q-separator dark vertical inset />
+        <q-separator vertical inset />
         <!-- <q-space></q-space> -->
         <q-toolbar-title>
           Biocentro Guembe
         </q-toolbar-title>
 
+        <q-separator vertical inset />
         <template v-if="isAuthenticated">
-          <q-separator dark vertical inset />
           <q-btn-dropdown
             flat stretch
             auto-close
@@ -63,7 +63,6 @@
           </q-btn-dropdown>
         </template>
         <template v-else>
-          <q-separator dark vertical inset />
           <q-btn-dropdown flat stretch label="Iniciar Session" auto-close>
             <client-authentication></client-authentication>
             <!-- <q-list>
