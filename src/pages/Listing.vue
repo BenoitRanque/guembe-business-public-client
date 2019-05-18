@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page padding style="max-width: 800px; margin: 0 auto">
     <available-listing v-if="listing" :listing="listing">
 
     </available-listing>
@@ -48,6 +48,10 @@ export default {
             listing_id
             public_name
             description
+            listing_images {
+              image_id
+              name
+            }
             listing_products {
               product {
                 public_name

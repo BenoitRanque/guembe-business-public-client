@@ -1,5 +1,9 @@
 <template>
   <q-page padding>
+    <q-btn @click="showClientCodeDialog = true" label="Ver Codigo Cliente"></q-btn>
+    <q-dialog v-model="showClientCodeDialog" :maximized="$q.platform.is.mobile">
+      <client-token></client-token>
+    </q-dialog>
     <template v-if="purchases && purchases.length">
       <q-list>
         <q-item :to="`/purchase/${purchase.purchase_id}`" v-for="(purchase, index) in purchases" :key="index">
@@ -32,13 +36,18 @@
 </template>
 
 <script>
+import ClientToken from 'components/ClientToken'
 import { date } from 'quasar'
 const { formatDate } = date
 
 export default {
   name: 'Purchase',
+  components: {
+    ClientToken
+  },
   data () {
     return {
+      showClientCodeDialog: false,
       purchases: null,
       loading: false
     }

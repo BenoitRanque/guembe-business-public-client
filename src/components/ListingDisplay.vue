@@ -1,5 +1,5 @@
 <template>
-  <q-card v-bind="$attrs">
+  <q-card v-bind="$attrs" flat>
     <slot name="header"/>
     <q-card-section class="text-subtitle2 row">
       {{listing.public_name}}
@@ -10,7 +10,7 @@
       {{listing.description}}
     </q-card-section>
     <q-card-section class="q-px-none">
-      <q-expansion-item dense label="Detalles" dense-toggle>
+      <q-expansion-item dense label="Detalles" dense-toggle default-opened>
         <template v-slot:header>
           <q-item-section>
             <q-item-label caption>

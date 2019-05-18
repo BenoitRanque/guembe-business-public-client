@@ -1,15 +1,22 @@
 <template>
   <listing-display :listing="listing" v-bind="$attrs">
     <template v-slot:footer>
-      <q-separator></q-separator>
-      <q-card-section class="row">
-        <q-btn @click="removeFromCart" color="negative" class="col-auto">
-          Quitar
-        </q-btn>
-        <q-space></q-space>
-        <q-input type="number" v-model="amount" :label="`Cantidad en carrito: ${amountInCart}`" dense square outlined class="col-auto q-mx-xs"></q-input>
-        <q-btn :disable="Number(amount) === Number(amountInCart) || Number(amount) < 1" @click="updateInCart" color="primary" class="col-auto">Guardar Cambios</q-btn>
-      </q-card-section>
+      <q-card-actions>
+        <q-separator class="full-width q-mb-xs"></q-separator>
+        <div class="row full-width">
+          <q-btn @click="removeFromCart" color="negative" flat class="col-auto">
+            Quitar
+            <q-tooltip>
+              Quitar articulo del carrito
+            </q-tooltip>
+          </q-btn>
+          <q-space></q-space>
+          <q-form @submit="updateInCart" @reset="amount = ''" class="row">
+            <q-input class="col-auto q-mr-xs" type="number" required min="1" v-model="amount" :label="`Cantidad en carrito: ${amountInCart}`" dense square outlined></q-input>
+            <q-btn class="col-auto" type="submit" color="primary">Guardar Cambios</q-btn>
+          </q-form>
+        </div>
+      </q-card-actions>
     </template>
   </listing-display>
 </template>
@@ -29,7 +36,7 @@ export default {
   data () {
     return {
       loading: false,
-      amount: 1
+      amount: ''
     }
   },
   computed: {
@@ -67,7 +74,6 @@ export default {
     }
   },
   mounted () {
-    this.amount = this.amountInCart
   }
 }
 </script>

@@ -58,7 +58,9 @@ module.exports = function (ctx) {
         'QBadge',
         'QAvatar',
         'QBtnDropdown',
-        'QUploader'
+        'QCarousel',
+        'QCarouselSlide',
+        'QForm'
       ],
 
       directives: [
