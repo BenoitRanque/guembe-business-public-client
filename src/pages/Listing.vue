@@ -50,6 +50,7 @@ export default {
             description
             listing_images {
               image_id
+              placeholder
               name
             }
             listing_products {

@@ -5,13 +5,29 @@
         <div class="fit absolute-top-left">
           <q-carousel
             animated
+            keep-alive
             height="100%"
             v-model="slide"
             :arrows="listing.listing_images.length > 1"
             :infinite="listing.listing_images.length > 1"
-            :thumbnails="listing.listing_images.length > 1"
+            :navigation="listing.listing_images.length > 1"
           >
-            <q-carousel-slide v-for="(image, index) in listing.listing_images" :key="`slide_${index}`" :name="index" :img-src="`http://localhost:3000/upload/listing/image?image_id=${image.image_id}`"></q-carousel-slide>
+            <q-carousel-slide
+              class="q-pa-none cursor-pointer"
+              v-for="(image, index) in  listing.listing_images"
+              :key="`slide_${index}`"
+              :name="index"
+              @click="$router.push(`/listing/${image.listing.listing_id}`)"
+            >
+              <q-img
+                :src="$imgUrl.listing.src(image.image_id)"
+                :srcset="$imgUrl.listing.srcset(image.image_id)"
+                sizes="(min-width: 800px) 800px, 100vw"
+                :placeholder-src="image.placeholder"
+              >
+                <template v-slot:loading></template>
+              </q-img>
+            </q-carousel-slide>
           </q-carousel>
         </div>
       </div>
