@@ -68,7 +68,7 @@ export default {
                 lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
                   weekday {
                     weekday_id
-                    weekday_name
+                    description
                   }
                 }
               }

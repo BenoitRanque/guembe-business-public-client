@@ -20,7 +20,7 @@
           {{lifetime.end}}
         </q-card-section>
         <q-card-section>
-          {{lifetime.lifetime_weekdays.map(({ weekday: { weekday_name } }) => weekday_name).join(', ')}}
+          {{lifetime.lifetime_weekdays.map(({ weekday: { description } }) => description).join(', ')}}
         </q-card-section>
       </q-card>
     </q-menu>

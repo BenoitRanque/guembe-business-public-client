@@ -20,14 +20,14 @@ class GraphQLError {
         Notify.create({
           message,
           color: 'negative',
-          icon: 'mdi-alert'
+          icon: 'mdi-alert-octagon'
         })
       })
     } else {
       Notify.create({
         message: `${this.response.statusCode}: ${this.response.statusText}`,
         color: 'negative',
-        icon: 'mdi-alert'
+        icon: 'mdi-alert-octagon'
       })
     }
   }
