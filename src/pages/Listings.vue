@@ -51,7 +51,6 @@
         </q-item-section>
       </q-item>
     </q-list>
-    <pre>{{highlighted}}</pre>
     <q-inner-loading :showing="loading">
       <q-spinner></q-spinner>
     </q-inner-loading>

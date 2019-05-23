@@ -82,6 +82,7 @@ export default {
               izi_timestamp
             }
             purchase_listings {
+              quantity
               listing {
                 listing_id
                 public_name
