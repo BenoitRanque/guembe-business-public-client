@@ -6,7 +6,7 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     boot: [
       'AuthGuard',
-      'GraphQL',
+      'API',
       'ImgUrl'
     ],
 
