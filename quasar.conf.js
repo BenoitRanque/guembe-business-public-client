@@ -71,7 +71,8 @@ module.exports = function (ctx) {
       // Quasar plugins
       plugins: [
         'Notify',
-        'SessionStorage'
+        'SessionStorage',
+        'Cookies'
       ],
 
       iconSet: 'mdi-v3'
