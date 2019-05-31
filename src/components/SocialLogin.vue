@@ -54,10 +54,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('oauth', ['isAuthenticated'])
+    ...mapGetters(['isAuthenticated'])
   },
   methods: {
-    ...mapActions('oauth', ['authenticate', 'logout']),
+    ...mapActions(['authenticate', 'logout']),
     authenticationRequested () {
       this.showLogin = true
     }

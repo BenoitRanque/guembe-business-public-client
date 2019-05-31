@@ -51,7 +51,7 @@
                 </q-item-section>
               </q-item>
               <q-separator></q-separator>
-              <q-item clickable @click="logout">
+              <q-item clickable @click="LOGOUT">
                 <q-item-section side>
                   <q-icon name="mdi-logout"></q-icon>
                 </q-item-section>
@@ -154,10 +154,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('oauth', ['isAuthenticated'])
+    ...mapGetters(['isAuthenticated'])
   },
   methods: {
-    ...mapActions('oauth', ['authenticate', 'logout']),
+    ...mapActions(['LOGOUT']),
     authenticationRequested () {
       this.showLoginDialog = true
     }

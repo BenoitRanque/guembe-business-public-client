@@ -107,6 +107,7 @@ export default {
         this.highlighted = highlighted
         this.listings = listings
       } catch (error) {
+        console.error(error)
         this.$gql.handleError(error)
       } finally {
         this.loading = false

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Notify } from 'quasar'
+import { Notify, Cookies } from 'quasar'
 
 class GraphQLError {
   constructor ({ query, variables, errors }) {
@@ -33,7 +33,7 @@ class GraphQL extends Function {
   }
 
   async __call__ (query = '', variables = {}) {
-    const { data, errors } = await this.api.post('/graphql', { query, variables })
+    const { data: { data, errors } } = await this.api.post('/graphql', { query, variables })
 
     if (errors) {
       throw new GraphQLError({ query, variables, errors })
@@ -43,6 +43,7 @@ class GraphQL extends Function {
   }
 
   handleError (error) {
+    console.log(error)
     if (error instanceof GraphQLError) {
       error.display()
     } else {
@@ -51,21 +52,29 @@ class GraphQL extends Function {
   }
 }
 
-export default ({ app, router, store, Vue }) => {
+export default ({ app, router, store, Vue, ssrContext }) => {
   const api = axios.create({
-    baseURL: 'http://localhost:9090/api/v1',
-    timeout: 1000,
+    baseURL: 'https://chuturubi.com/api/v1',
+    timeout: 5000,
+    xsrfCookieName: 'XSRF-TOKEN', // default
+    xsrfHeaderName: 'X-XSRF-TOKEN', // default
     withCredentials: true
   })
 
   api.interceptors.request.use(async request => {
+    console.log('making request...')
+    const cookies = process.env.SERVER
+      ? Cookies.parseSSR(ssrContext)
+      : Cookies // otherwise we're on client
+
+    const xsrfCookie = cookies.get('XSRF-TOKEN')
     // if there is no XSRF token, make a request to the dedicated endpoint
-    if (!document.cookie['XSRF-TOKEN'] && !/\/csrftoken$/.test(request.url)) {
+    if (!xsrfCookie && !/\/csrftoken$/.test(request.url)) {
       // this request has an empty response (http 204)
       await api('/csrftoken')
     }
     return request
-  })
+  }, async error => Promise.reject(error))
 
   const gql = new GraphQL(api)
 

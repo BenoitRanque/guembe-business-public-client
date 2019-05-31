@@ -6,7 +6,7 @@ import * as getters from './getters'
 import * as mutations from './mutations'
 import * as actions from './actions'
 
-import oauth from './oauth'
+// import oauth from './oauth'
 import cart from './cart'
 
 Vue.use(Vuex)
@@ -23,7 +23,7 @@ export default function (/* { ssrContext } */) {
     mutations,
     actions,
     modules: {
-      oauth,
+      // oauth,
       cart
     },
     // enable strict mode (adds overhead!)

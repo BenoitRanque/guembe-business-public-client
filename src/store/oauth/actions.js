@@ -26,7 +26,7 @@ export function authenticate ({ commit }, { provider, route = null }) {
 
   switch (provider) {
     case 'facebook':
-      baseURL = `https://www.facebook.com/v3.2/dialog/oauth`
+      baseURL = `https://www.facebook.com/v3.3/dialog/oauth`
       // if (this.$router.app.$q.platform.is.mobile) {
       // }
       queryObject.display = 'touch'
@@ -57,6 +57,9 @@ export function authenticate ({ commit }, { provider, route = null }) {
   }
 
   let queryString = queryArray.join('&')
+
+  console.log(baseURL, queryObject)
+  console.log(`${baseURL}?${queryString}`)
 
   window.location.href = `${baseURL}?${queryString}`
 }

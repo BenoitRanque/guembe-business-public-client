@@ -5,6 +5,7 @@ module.exports = function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
+      'RestoreSession',
       'AuthGuard',
       'API',
       'ImgUrl'
@@ -101,6 +102,7 @@ module.exports = function (ctx) {
     devServer: {
       // https: true,
       // port: 8080,
+      public: 'https://chuturubi.com',
       open: true // opens browser window automatically
     },
 

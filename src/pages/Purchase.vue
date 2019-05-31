@@ -41,22 +41,10 @@ export default {
   },
   methods: {
     async verifyPaymentStatus (payment_id) {
-      const query = /* GraphQL */`
-        mutation ($payment_id: uuid!) {
-          payment: verify_payment_status (payment_id: $payment_id) {
-            name
-            description
-          }
-        }
-      `
-      const variables = {
-        payment_id
-      }
-
       try {
         this.loading = true
 
-        await this.$gql(query, variables)
+        await this.$api.post(`/store/verifypayment/${payment_id}`)
       } catch (error) {
         this.$gql.handleError(error)
       } finally {

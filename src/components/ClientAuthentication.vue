@@ -11,7 +11,8 @@
     <q-card-section>
       <q-btn
         class="full-width"
-        @click="authenticate({ provider: 'google' })"
+        type="a"
+        :href="`${authUrl}/google`"
         color="red"
         icon="mdi-google"
       >Iniciar Session Con Google</q-btn>
@@ -19,7 +20,8 @@
     <q-card-section>
       <q-btn
         class="full-width"
-        @click="authenticate({ provider: 'facebook' })"
+        type="a"
+        :href="`${authUrl}/facebook`"
         color="blue"
         icon="mdi-facebook"
       >Iniciar Session Con Facebook</q-btn>
@@ -28,11 +30,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   name: 'ClientAuthentication',
-  methods: {
-    ...mapActions('oauth', ['authenticate'])
+  computed: {
+    authUrl () {
+      return `${this.$api.defaults.baseURL}/auth/oauth`
+    }
   }
 }
 </script>

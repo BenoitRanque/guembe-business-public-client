@@ -109,7 +109,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('oauth', ['authProtected']),
+    ...mapActions(['authProtected']),
     async removeFromCart () {
       try {
         this.loading = true

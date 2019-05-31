@@ -5,8 +5,8 @@ const routes = [
     component: () => import('layouts/ClientLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-      { name: 'OAuthSuccessCallback', path: 'OAuthSuccessCallback', component: () => import('pages/OAuthCallback.vue') },
-      { name: 'OAuthFailureCallback', path: 'OAuthFailureCallback', component: () => import('pages/OAuthCallback.vue') },
+      // { name: 'OAuthSuccessCallback', path: 'OAuthSuccessCallback', component: () => import('pages/OAuthCallback.vue') },
+      // { name: 'OAuthFailureCallback', path: 'OAuthFailureCallback', component: () => import('pages/OAuthCallback.vue') },
       // props: true means listing id will be passed as a prop to the component
       { path: 'listing/:ListingId', props: true, component: () => import('pages/Listing.vue') },
       { path: 'listings', component: () => import('pages/Listings.vue') },

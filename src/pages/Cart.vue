@@ -59,10 +59,10 @@ export default {
   },
   computed: {
     ...mapState('cart', { 'cart': 'listings' }),
-    ...mapState('oauth', {
-      'clientName': state => state.credentials.account.name,
-      'clientEmail': state => state.credentials.account.email
-    }),
+    // ...mapState('oauth', {
+    //   'clientName': state => state.credentials.account.name,
+    //   'clientEmail': state => state.credentials.account.email
+    // }),
     someItemsNoLongerAvailable () {
       if (!this.cart) return false
 
@@ -119,25 +119,14 @@ export default {
       return purchase
     },
     async createPayment (purchase_id) {
-      const query = /* GraphQL */`
-        mutation ($payment: StoreCheckoutPaymentInput! $purchase_id: uuid!) {
-          store_checkout (purchase_id: $purchase_id, payment: $payment) {
-            khipu_payment_url
-          }
-        }
-      `
-
-      const variables = {
-        purchase_id,
+      const { data: { khipu_payment_url } } = await this.$api.post(`/store/checkout/${purchase_id}`, {
         payment: {
           return_url: `${window.location.origin}/purchase/${purchase_id}`,
           cancel_url: `${window.location.origin}/cart`,
-          payer_name: this.clientName,
-          payer_email: this.clientEmail
+          payer_name: 'Benoit Ranque',
+          payer_email: 'ranque.benoit@gmail.com'
         }
-      }
-
-      const { store_checkout: { khipu_payment_url } } = await this.$gql(query, variables)
+      })
 
       return khipu_payment_url
     },

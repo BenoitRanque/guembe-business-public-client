@@ -21,5 +21,5 @@ export default async ({ app, router, Vue, store, ssrContext }) => {
 
   const session = JSON.parse(atob(token))
 
-  store.dispatch('LOGIN', session)
+  store.dispatch('LOGIN', session.ses)
 }
