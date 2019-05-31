@@ -56,8 +56,8 @@ export default ({ app, router, store, Vue, ssrContext }) => {
   const api = axios.create({
     baseURL: 'https://chuturubi.com/api/v1',
     timeout: 5000,
-    xsrfCookieName: 'XSRF-TOKEN', // default
-    xsrfHeaderName: 'X-XSRF-TOKEN', // default
+    // xsrfCookieName: 'XSRF-TOKEN', // default
+    // xsrfHeaderName: 'X-XSRF-TOKEN', // default
     withCredentials: true
   })
 
@@ -67,12 +67,15 @@ export default ({ app, router, store, Vue, ssrContext }) => {
       ? Cookies.parseSSR(ssrContext)
       : Cookies // otherwise we're on client
 
-    const xsrfCookie = cookies.get('XSRF-TOKEN')
-    // if there is no XSRF token, make a request to the dedicated endpoint
-    if (!xsrfCookie && !/\/csrftoken$/.test(request.url)) {
-      // this request has an empty response (http 204)
-      await api('/csrftoken')
+    const sessionCookie = cookies.get('session-auth')
+    if (sessionCookie) {
+      request.headers['Authorization'] = `session-auth ${sessionCookie}`
     }
+    // // if there is no XSRF token, make a request to the dedicated endpoint
+    // if (!xsrfCookie && !/\/csrftoken$/.test(request.url)) {
+    //   // this request has an empty response (http 204)
+    //   await api('/csrftoken')
+    // }
     return request
   }, async error => Promise.reject(error))
 

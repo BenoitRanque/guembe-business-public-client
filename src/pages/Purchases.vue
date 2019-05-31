@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-btn @click="showClientCodeDialog = true" label="Ver Codigo Cliente"></q-btn>
-    <q-dialog v-model="showClientCodeDialog" :maximized="$q.platform.is.mobile">
+    <q-dialog v-model="showClientCodeDialog">
       <client-token></client-token>
     </q-dialog>
     <template v-if="purchases && purchases.length">
@@ -15,7 +15,7 @@
               {{formatDate(purchase.created_at, 'DD/MM/YYYY')}}
             </q-item-label>
           </q-item-section>
-          <q-item-section side>
+          <q-item-section side v-if="purchase.payment">
             BS {{Number(purchase.payment.amount / 100).toFixed(2)}}
           </q-item-section>
         </q-item>

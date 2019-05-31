@@ -19,7 +19,10 @@ export default async ({ app, router, Vue, store, ssrContext }) => {
     throw new Error('Unexpected format for session cookie')
   }
 
-  const session = JSON.parse(atob(token))
+  // Buffer.from(token, 'base64').toString()
+
+  // const session = JSON.parse(atob(token))
+  const session = JSON.parse(Buffer.from(token, 'base64').toString())
 
   store.dispatch('LOGIN', session.ses)
 }

@@ -1,6 +1,6 @@
 // define helper functions for setting image src and srcset
 
-const baseUrl = `http://${process.env.DEV ? 'localhost' : 'app.guembe.bo'}:3000`
+const baseUrl = `https://chuturubi.com/api/v1`
 const sizes = [
   { name: 'xl', width: 1200 },
   { name: 'lg', width: 800 },

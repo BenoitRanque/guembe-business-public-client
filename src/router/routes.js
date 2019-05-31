@@ -23,6 +23,15 @@ if (process.env.MODE !== 'ssr') {
     path: '*',
     component: () => import('pages/Error404.vue')
   })
+} else {
+  routes.push({
+    path: '/error404',
+    component: () => import('pages/Error404.vue')
+  })
+  routes.push({
+    path: '/error500',
+    component: () => import('pages/Error404.vue')
+  })
 }
 
 export default routes
