@@ -14,6 +14,13 @@ const routes = [
       { path: 'purchase/:PurchaseId', props: true, component: () => import('pages/Purchase.vue'), meta: { requireAuthentication: true } },
       { path: 'purchases', component: () => import('pages/Purchases.vue'), meta: { requireAuthentication: true } }
     ]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/DynamicLayout.vue'),
+    children: [
+      { path: 'dynamic', component: () => import('pages/DynamicPage.vue') }
+    ]
   }
 ]
 

@@ -62,11 +62,15 @@ module.exports = function (ctx) {
         'QBtnDropdown',
         'QCarousel',
         'QCarouselSlide',
-        'QForm'
+        'QForm',
+        'QSelect',
+        'QBar',
+        'QEditor'
       ],
 
       directives: [
-        'Ripple'
+        'Ripple',
+        'ClosePopup'
       ],
 
       // Quasar plugins
