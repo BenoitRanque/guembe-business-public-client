@@ -105,7 +105,7 @@
     </q-header>
 
     <q-page-container>
-      <q-img src="statics/img/aviario_1.jpg" class="fixed-top-left fixed-top-right">
+      <q-img src="statics/img/aviario_1.jpg" class="fixed-top-left fixed-bottom-right">
       </q-img>
       <router-view />
       <!-- <q-image :src="require('img/aviario_1.jpg')" class="absolute-top-left absolute-bottom-right"></q-image> -->
