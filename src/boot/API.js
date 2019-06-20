@@ -47,20 +47,34 @@ class GraphQL extends Function {
     if (error instanceof GraphQLError) {
       error.display()
     } else {
-      throw error
+      this.api.handleError(error)
     }
   }
 }
 
-export default ({ app, router, store, Vue, ssrContext }) => {
-  const api = axios.create({
-    baseURL: 'https://chuturubi.com/api/v1',
-    timeout: 5000,
-    // xsrfCookieName: 'XSRF-TOKEN', // default
-    // xsrfHeaderName: 'X-XSRF-TOKEN', // default
-    withCredentials: true
-  })
+const api = axios.create({
+  baseURL: 'https://chuturubi.com/api/v1',
+  timeout: 5000,
+  // xsrfCookieName: 'XSRF-TOKEN', // default
+  // xsrfHeaderName: 'X-XSRF-TOKEN', // default
+  withCredentials: true
+})
 
+api.handleError = function handleError (error) {
+  console.log(error.response)
+  if (error.response && error.response.data) {
+    Notify.create({
+      message: error.response.data,
+      color: 'negative',
+      icon: 'mdi-alert-octagon'
+    })
+  }
+  throw error
+}
+
+const gql = new GraphQL(api)
+
+export default ({ app, router, store, Vue, ssrContext }) => {
   api.interceptors.request.use(async request => {
     console.log('making request...')
     const cookies = process.env.SERVER
@@ -79,8 +93,11 @@ export default ({ app, router, store, Vue, ssrContext }) => {
     return request
   }, async error => Promise.reject(error))
 
-  const gql = new GraphQL(api)
-
   Vue.prototype.$api = api
   Vue.prototype.$gql = gql
+}
+
+export {
+  api,
+  gql
 }

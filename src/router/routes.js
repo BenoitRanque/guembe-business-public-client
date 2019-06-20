@@ -4,7 +4,6 @@ const routes = [
     path: '/',
     component: () => import('layouts/ClientLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
       // { name: 'OAuthSuccessCallback', path: 'OAuthSuccessCallback', component: () => import('pages/OAuthCallback.vue') },
       // { name: 'OAuthFailureCallback', path: 'OAuthFailureCallback', component: () => import('pages/OAuthCallback.vue') },
       // props: true means listing id will be passed as a prop to the component
@@ -12,14 +11,15 @@ const routes = [
       { path: 'listings', component: () => import('pages/Listings.vue') },
       { path: 'cart', component: () => import('pages/Cart.vue'), meta: { requireAuthentication: true } },
       { path: 'purchase/:PurchaseId', props: true, component: () => import('pages/Purchase.vue'), meta: { requireAuthentication: true } },
-      { path: 'purchases', component: () => import('pages/Purchases.vue'), meta: { requireAuthentication: true } }
-    ]
-  },
-  {
-    path: '/',
-    component: () => import('layouts/DynamicLayout.vue'),
-    children: [
-      { path: 'dynamic', component: () => import('pages/DynamicPage.vue') }
+      { path: 'purchases', component: () => import('pages/Purchases.vue'), meta: { requireAuthentication: true } },
+      {
+        path: ':path(.*)?',
+        props: { default: true, background: true },
+        components: {
+          default: () => import('pages/DynamicWebsite.vue'),
+          background: () => import('components/BackgroundImage')
+        }
+      }
     ]
   }
 ]

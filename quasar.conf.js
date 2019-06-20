@@ -2,13 +2,16 @@
 
 module.exports = function (ctx) {
   return {
+    preFetch: true,
+
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
       'RestoreSession',
       'AuthGuard',
-      'API',
-      'ImgUrl'
+      'api',
+      'img',
+      'i18n'
     ],
 
     css: [
@@ -77,8 +80,13 @@ module.exports = function (ctx) {
       plugins: [
         'Notify',
         'SessionStorage',
-        'Cookies'
+        'Cookies',
+        'LoadingBar'
       ],
+
+      config: {
+        loadingBar: { /* LoadingBar defaults */ }
+      },
 
       iconSet: 'mdi-v3'
       // lang: 'de' // Quasar language

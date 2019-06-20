@@ -104,6 +104,8 @@
       </q-toolbar>
     </q-header>
 
+    <router-view name="background"></router-view>
+
     <q-page-container>
       <router-view />
     </q-page-container>

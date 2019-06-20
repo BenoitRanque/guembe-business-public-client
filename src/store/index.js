@@ -8,6 +8,7 @@ import * as actions from './actions'
 
 // import oauth from './oauth'
 import cart from './cart'
+import website from './website'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,8 @@ export default function (/* { ssrContext } */) {
     actions,
     modules: {
       // oauth,
-      cart
+      cart,
+      website
     },
     // enable strict mode (adds overhead!)
     // for dev mode only
