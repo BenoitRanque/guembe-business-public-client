@@ -1,53 +1,22 @@
 <template>
   <q-page padding style="max-width: 800px; margin: 0 auto">
-    <div v-if="highlighted.length"  style="heigh: 0; overflow: hidden; padding-top: 50%;" class="relative-position q-mb-md">
-      <div class="fit absolute-top-left">
-        <q-carousel
-          keep-alive
-          animated
-          v-model="slide"
-          height="100%"
-          :autoplay="10000"
-          :arrows="highlighted.length > 1"
-          :infinite="highlighted.length > 1"
-          :navigation="highlighted.length > 1"
-        >
-          <q-carousel-slide
-            class="q-pa-none cursor-pointer"
-            v-for="(image, index) in highlighted"
-            :key="`slide_${index}`"
-            :name="index"
-            @click="$router.push(`/listing/${image.listing.listing_id}`)"
-          >
-            <q-img
-              :src="$imgUrl.listing.src(image.image_id)"
-              :srcset="$imgUrl.listing.srcset(image.image_id)"
-              sizes="(min-width: 800px) 800px, 100vw"
-              :placeholder-src="image.placeholder"
-            >
-              <template v-slot:loading></template>
-            </q-img>
-          </q-carousel-slide>
-        </q-carousel>
-      </div>
-    </div>
     <q-list>
       <q-item
         v-for="(listing, index) in listings"
         :key="index"
         clickable
-        :to="`/listing/${listing.listing_id}`"
+        :to="`/webstore/listing/${listing.listing_id}`"
       >
         <q-item-section>
           <q-item-label :lines="1">
-            {{listing.public_name}}
+            {{$i18n(listing, 'name')}}
           </q-item-label>
           <q-item-label caption :lines="2">
-            {{listing.description}}
+            {{$i18n(listing, 'description')}}
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          BS {{getListingPrice(listing)}}
+          BS {{getListingPrice(listing.total)}}
         </q-item-section>
       </q-item>
     </q-list>
@@ -64,38 +33,28 @@ export default {
     return {
       slide: 0,
       loading: false,
-      listings: [],
-      highlighted: []
+      listings: []
     }
   },
   methods: {
-    getListingPrice (listing) {
-      return listing.listing_products.reduce((subtotal, { price, quantity }) => subtotal + ((price / 100) * quantity), 0).toFixed(2)
+    getListingPrice (total) {
+      return (total / 100).toFixed(2)
     },
+    // getListingPrice (listing) {
+    //   return listing.listing_products.reduce((subtotal, { price, quantity }) => subtotal + ((price / 100) * quantity), 0).toFixed(2)
+    // },
     async loadAvailableListings () {
       const query = /* GraphQL */`
         query {
-          highlighted: store_listing_image (where: { highlighted: { _eq: true }, listing: { available_listing: {} } }) {
-            name
-            image_id
-            placeholder
-            listing {
-              listing_id
-              public_name
-              description
-              listing_products {
-                quantity
-                price
-              }
-            }
-          }
-          listings: store_listing (where: { available_listing: { listing_id: { _is_null: false } } }) {
+          listings: webstore_listing {
             listing_id
-            public_name
-            description
-            listing_products {
-              quantity
-              price
+            i18n (where: { locale_id: { _eq: "es" } }) {
+              name
+              description
+            }
+            total
+            inventory {
+              available
             }
           }
         }

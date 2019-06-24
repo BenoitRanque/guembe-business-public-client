@@ -12,7 +12,7 @@
       <q-btn
         class="full-width"
         type="a"
-        :href="`${authUrl}/google`"
+        :href="authUrl('google')"
         color="red"
         icon="mdi-google"
       >Iniciar Session Con Google</q-btn>
@@ -21,7 +21,7 @@
       <q-btn
         class="full-width"
         type="a"
-        :href="`${authUrl}/facebook`"
+        :href="authUrl('facebook')"
         color="blue"
         icon="mdi-facebook"
       >Iniciar Session Con Facebook</q-btn>
@@ -32,9 +32,9 @@
 <script>
 export default {
   name: 'ClientAuthentication',
-  computed: {
-    authUrl () {
-      return `${this.$api.defaults.baseURL}/auth/oauth`
+  methods: {
+    authUrl (provider) {
+      return `${this.$api.defaults.baseURL}/auth/oauth/${provider}?callback=${encodeURIComponent(this.$route.fullPath)}`
     }
   }
 }

@@ -25,7 +25,7 @@
       <q-banner rounded  class="bg-positive" inline-actions>
         Aun no tiene niguna compra realizada
         <template v-slot:action>
-          <q-btn @click="$router.push('/listings')" flat label="Ir a tienda"></q-btn>
+          <q-btn @click="$router.push('/webstore/listings')" flat label="Ir a tienda"></q-btn>
         </template>
       </q-banner>
     </template>

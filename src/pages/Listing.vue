@@ -44,31 +44,37 @@ export default {
     async loadListing (ListingId) {
       const query = /* GraphQL */`
         query ($listing_id: uuid!) {
-          listing: store_listing_by_pk (listing_id: $listing_id) {
+          listing: webstore_listing_by_pk (listing_id: $listing_id) {
             listing_id
-            public_name
-            description
-            listing_images {
-              image_id
-              placeholder
+            i18n (where: { locale_id: { _eq: "es" } }) {
               name
+              description
+            }
+            total
+            inventory {
+              available
             }
             listing_products {
               product {
-                public_name
-                description
+                i18n (where: { locale_id: { _eq: "es" } }) {
+                  name
+                  description
+                }
               }
               quantity
               price
               lifetime {
-                public_name
-                description
                 start
                 end
+                i18n (where: { locale_id: { _eq: "es" } }) {
+                  name
+                  description
+                }
                 lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
                   weekday {
-                    weekday_id
-                    description
+                    i18n (where: { locale_id: { _eq: "es" } }) {
+                      name
+                    }
                   }
                 }
               }

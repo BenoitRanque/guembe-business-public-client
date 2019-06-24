@@ -2,12 +2,12 @@
   <q-card v-bind="$attrs" flat>
     <slot name="header"/>
     <q-card-section class="text-subtitle2 row">
-      {{listing.public_name}}
+      {{$i18n(listing, 'name')}}
       <q-space></q-space>
-      Bs {{listing.listing_products.reduce((subtotal, { price, quantity }) => subtotal + ((price / 100) * quantity), 0).toFixed(2)}}
+      Bs {{(listing.total / 100).toFixed(2)}}
     </q-card-section>
     <q-card-section class="text-caption">
-      {{listing.description}}
+      {{$i18n(listing, 'description')}}
     </q-card-section>
     <q-card-section class="q-px-none">
       <q-expansion-item dense label="Detalles" dense-toggle default-opened>
@@ -27,26 +27,26 @@
         >
           <thead>
             <tr>
-              <th class="text-left">Producto Incluido</th>
-              <th class="text-right">Precio Unitario</th>
-              <th class="text-right">Cantidad</th>
-              <th class="text-right">Subtotal</th>
+              <th class="text-left text-no-wrap">Producto Incluido</th>
+              <th class="text-right text-no-wrap">Precio Unitario</th>
+              <th class="text-right text-no-wrap">Cantidad</th>
+              <th class="text-right text-no-wrap">Subtotal</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(product, index) in listing.listing_products" :key="index">
               <td>
                 <div class="text-body2">
-                  {{product.product.public_name}}
+                  {{$i18n(product.product, 'name')}}
                 </div>
                 <div class="text-caption">
-                  {{product.product.description}}
+                  {{$i18n(product.product, 'description')}}
                 </div>
                 <lifetime-display :lifetime="product.lifetime"></lifetime-display>
               </td>
-              <td class="text-right">Bs {{(product.price / 100).toFixed(2)}}</td>
-              <td class="text-right">{{product.quantity}}</td>
-              <td class="text-right">Bs {{((product.price / 100) * product.quantity).toFixed(2)}}</td>
+              <td class="text-right text-no-wrap">Bs {{(product.price / 100).toFixed(2)}}</td>
+              <td class="text-right text-no-wrap">{{product.quantity}}</td>
+              <td class="text-right text-no-wrap">Bs {{((product.price / 100) * product.quantity).toFixed(2)}}</td>
             </tr>
           </tbody>
         </q-markup-table>

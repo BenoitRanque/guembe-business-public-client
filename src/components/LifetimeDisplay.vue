@@ -1,6 +1,6 @@
 <template>
   <div class="text-caption cursor-pointer" @click.native="show = !show">
-    {{lifetime.public_name}}
+    {{$i18n(lifetime, 'name')}}
     <q-icon name="mdi-information">
       <q-tooltip>
         Haz click para mas detalles
@@ -9,10 +9,10 @@
     <q-menu v-model="show">
       <q-card>
         <q-card-section>
-          {{lifetime.public_name}}
+          {{$i18n(lifetime, 'name')}}
         </q-card-section>
         <q-card-section>
-          {{lifetime.description}}
+          {{$i18n(lifetime, 'description')}}
         </q-card-section>
         <q-card-section>
           {{lifetime.start}}
@@ -20,7 +20,7 @@
           {{lifetime.end}}
         </q-card-section>
         <q-card-section>
-          {{lifetime.lifetime_weekdays.map(({ weekday: { description } }) => description).join(', ')}}
+          {{lifetime.lifetime_weekdays.map(({ weekday }) => this.$i18n(weekday, 'name')).join(', ')}}
         </q-card-section>
       </q-card>
     </q-menu>

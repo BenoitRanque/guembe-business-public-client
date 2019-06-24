@@ -1,37 +1,5 @@
 <template>
   <listing-display :listing="listing" v-bind="$attrs">
-    <template v-slot:header v-if="listing.listing_images.length">
-      <div style="heigh: 0; overflow: hidden; padding-top: 50%;" class="relative-position">
-        <div class="fit absolute-top-left">
-          <q-carousel
-            animated
-            keep-alive
-            height="100%"
-            v-model="slide"
-            :arrows="listing.listing_images.length > 1"
-            :infinite="listing.listing_images.length > 1"
-            :navigation="listing.listing_images.length > 1"
-          >
-            <q-carousel-slide
-              class="q-pa-none cursor-pointer"
-              v-for="(image, index) in  listing.listing_images"
-              :key="`slide_${index}`"
-              :name="index"
-              @click="$router.push(`/listing/${image.listing.listing_id}`)"
-            >
-              <q-img
-                :src="$imgUrl.listing.src(image.image_id)"
-                :srcset="$imgUrl.listing.srcset(image.image_id)"
-                sizes="(min-width: 800px) 800px, 100vw"
-                :placeholder-src="image.placeholder"
-              >
-                <template v-slot:loading></template>
-              </q-img>
-            </q-carousel-slide>
-          </q-carousel>
-        </div>
-      </div>
-    </template>
     <template v-slot:footer v-if="listingAlreadyInCart">
       <q-card-actions>
         <q-separator class="full-width q-mb-xs"></q-separator>
@@ -53,7 +21,7 @@
         <q-banner class="bg-positive" dense rounded inline-actions>
           Este articulo ya se encuentra en el carrito
           <template v-slot:action>
-            <q-btn dense @click="$router.push('/cart')" flat label="Ir A Carrito"></q-btn>
+            <q-btn dense @click="$router.push('/webstore/cart')" flat label="Ir A Carrito"></q-btn>
           </template>
         </q-banner>
       </q-card-section>

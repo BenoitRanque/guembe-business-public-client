@@ -4,7 +4,7 @@
       <q-banner rounded  class="bg-positive" inline-actions>
         Carrito vacio. Puede aggregar articulos en la tienda
         <template v-slot:action>
-          <q-btn @click="$router.push('/listings')" dense flat label="Ir a tienda"></q-btn>
+          <q-btn @click="$router.push('/webstore/listings')" dense flat label="Ir a tienda"></q-btn>
         </template>
       </q-banner>
     </template>
@@ -13,7 +13,7 @@
         Algunos articulos ya no se encuentran disponibles.
         Debe quitarlos antes de proceder con la compra.
         <template v-slot:action>
-          <q-btn @click="removeUnavailableListings" flat label="quitar todos"></q-btn>
+          <q-btn @click="removeUnavailableListings" flat label="quitar articulos"></q-btn>
         </template>
       </q-banner>
       <q-banner v-if="someItemsHaveInsufficientStock" class="bg-warning q-mb-md" rounded inline-actions>
@@ -37,6 +37,7 @@
         <q-btn color="primary" @click="checkout">Finalizar Compra</q-btn>
       </div>
     </template>
+    <pre>{{cart}}</pre>
     <q-inner-loading :showing="loading">
       <q-spinner></q-spinner>
     </q-inner-loading>
@@ -66,12 +67,12 @@ export default {
     someItemsNoLongerAvailable () {
       if (!this.cart) return false
 
-      return this.cart.some(({ listing }) => !listing.available_listing)
+      return this.cart.some(({ listing }) => listing.inventory && !listing.inventory.available)
     },
     someItemsHaveInsufficientStock () {
       if (!this.cart) return false
 
-      return this.cart.some(({ quantity, listing }) => listing.listing_stock && listing.listing_stock.remaining_stock < quantity)
+      return this.cart.some(({ quantity, listing }) => listing.inventory && listing.inventory.remaining < quantity)
     }
   },
   methods: {
@@ -92,8 +93,8 @@ export default {
     },
     async createPurchase () {
       const query = /* GraphQL */`
-        mutation createPurchase ($objects: [store_purchase_insert_input!]!) {
-          insert: insert_store_purchase (objects: $objects) {
+        mutation createPurchase ($objects: [webstore_purchase_insert_input!]!) {
+          insert: insert_webstore_purchase (objects: $objects) {
             returning {
               purchase_id
             }
@@ -121,8 +122,8 @@ export default {
     async createPayment (purchase_id) {
       const { data: { khipu_payment_url } } = await this.$api.post(`/store/checkout/${purchase_id}`, {
         payment: {
-          return_url: `${window.location.origin}/purchase/${purchase_id}`,
-          cancel_url: `${window.location.origin}/cart`,
+          return_url: `${window.location.origin}/webstore/purchase/${purchase_id}`,
+          cancel_url: `${window.location.origin}/webstore/cart`,
           payer_name: 'Benoit Ranque',
           payer_email: 'ranque.benoit@gmail.com'
         }
@@ -144,10 +145,13 @@ export default {
     async removeUnavailableListings () {
       const query = /* GraphQL */`
         mutation {
-          listings: delete_store_cart_listing (where: {
+          listings: delete_webstore_cart_listing (where: {
             listing: {
               _not: {
-                available_listing: {
+                inventory: {
+                  available: {
+                    _eq: true
+                  }
                 }
               }
             }
@@ -185,8 +189,8 @@ export default {
 
       const variables = {
         objects: this.cart
-          .filter(({ listing, quantity }) => listing.listing_stock && listing.listing_stock.remaining_stock < quantity)
-          .map(({ listing_id, listing: { listing_stock: { remaining_stock: quantity } } }) => ({ quantity, listing_id }))
+          .filter(({ listing, quantity }) => listing.inventory && listing.inventory.remaining < quantity)
+          .map(({ listing_id, listing: { inventory: { remaining: quantity } } }) => ({ quantity, listing_id }))
       }
 
       try {

@@ -26,7 +26,7 @@
             label="Mi Cuenta"
           >
             <q-list>
-              <q-item to="/cart">
+              <q-item to="/webstore/cart">
                 <q-item-section side>
                   <q-icon name="mdi-cart-outline">
                     <q-badge floating color="primary" v-if="$store.state.cart.listings.length">

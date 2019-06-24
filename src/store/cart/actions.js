@@ -2,35 +2,41 @@
 export async function loadCart ({ commit }) {
   const query = /* GraphQL */`
     query {
-      cart: store_cart_listing {
+      cart: webstore_cart_listing {
         listing_id
         quantity
         listing {
-          available_listing {
-            listing_id
-          },
-          listing_stock {
-            remaining_stock
-          }
           listing_id
-          public_name
-          description
+          i18n (where: { locale_id: { _eq: "es" } }) {
+            name
+            description
+          }
+          inventory {
+            remaining
+            available
+          }
+          total
           listing_products {
             product {
-              public_name
-              description
+              i18n(where: { locale_id: { _eq: "es" } }) {
+                name
+                description
+              }
             }
             quantity
             price
             lifetime {
-              public_name
-              description
+              i18n(where: { locale_id: { _eq: "es" } }) {
+                name
+                description
+              }
               start
               end
               lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
                 weekday {
-                  weekday_id
-                  description
+                  i18n(where: { locale_id: { _eq: "es" } }) {
+                    name
+                  }
                 }
               }
             }
@@ -50,8 +56,8 @@ export async function loadCart ({ commit }) {
 
 export async function addToCart ({ dispatch }, objects) {
   const query = /* GraphQL */`
-    mutation createListing ($objects: [store_cart_listing_insert_input!]!) {
-      insert_store_cart_listing (objects: $objects on_conflict: {
+    mutation createListing ($objects: [webstore_cart_listing_insert_input!]!) {
+      insert_webstore_cart_listing (objects: $objects on_conflict: {
         constraint: cart_listing_pkey
         update_columns: [quantity]
       }) {
@@ -73,8 +79,8 @@ export async function addToCart ({ dispatch }, objects) {
 
 export async function removeFromCart ({ dispatch }, { listingId }) {
   const query = /* GraphQL */`
-    mutation ($where: store_cart_listing_bool_exp!) {
-      delete_store_cart_listing (where: $where) {
+    mutation ($where: webstore_cart_listing_bool_exp!) {
+      delete_webstore_cart_listing (where: $where) {
         affected_rows
       }
     }
