@@ -11,10 +11,13 @@ const routes = [
       { path: 'webstore/listing/:ListingId', props: true, component: () => import('pages/Listing.vue') },
       { path: 'webstore/listings', component: () => import('pages/Listings.vue') },
       { path: 'webstore/cart', component: () => import('pages/Cart.vue'), meta: { requireAuthentication: true } },
+      { path: 'webstore/checkout', component: () => import('pages/Checkout.vue'), meta: { requireAuthentication: true } },
       { path: 'webstore/purchase/:PurchaseId', props: true, component: () => import('pages/Purchase.vue'), meta: { requireAuthentication: true } },
       { path: 'webstore/purchases', component: () => import('pages/Purchases.vue'), meta: { requireAuthentication: true } },
+
+      { path: '', redirect: '/website' },
       {
-        path: ':path(.*)?',
+        path: 'website/:path(.*)?',
         props: { default: true, background: true },
         components: {
           default: () => import('pages/DynamicWebsite.vue'),

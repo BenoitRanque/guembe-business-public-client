@@ -61,7 +61,7 @@ export async function LOAD_PAGE ({ commit, state }, { path = '' } = { path: null
 
   if (!page) {
     commit('PAGE', null)
-    throw new Error(`Page at /${path} not found`)
+    // throw new Error(`Page at /${path} not found`)
   }
 
   commit('PAGE', page)

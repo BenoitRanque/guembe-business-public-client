@@ -1,4 +1,4 @@
-
+import { gql } from 'src/boot/api'
 export async function loadCart ({ commit }) {
   const query = /* GraphQL */`
     query {
@@ -47,7 +47,7 @@ export async function loadCart ({ commit }) {
   `
   const variables = {}
 
-  const { cart } = await this.$router.app.$gql(query, variables)
+  const { cart } = await gql(query, variables)
 
   commit('UPDATE_CART', cart)
 
@@ -70,7 +70,7 @@ export async function addToCart ({ dispatch }, objects) {
     objects
   }
 
-  await this.$router.app.$gql(query, variables)
+  await gql(query, variables)
 
   const cart = await dispatch('loadCart')
 
@@ -94,7 +94,7 @@ export async function removeFromCart ({ dispatch }, { listingId }) {
     }
   }
 
-  await this.$router.app.$gql(query, variables)
+  await gql(query, variables)
 
   const cart = await dispatch('loadCart')
 
