@@ -38,6 +38,7 @@
       </q-step>
       <q-step :name="3" title="Finalizar">
         finish
+        <pre>{{checkoutPayload}}</pre>
         <q-stepper-navigation align="right" class="q-gutter-x-md">
           <q-btn flat color="primary" @click="step--" label="Volver"/>
           <q-btn @click="checkout" color="primary" label="Finalizar" />
@@ -59,6 +60,7 @@ export default {
       step: 0,
       loading: false,
       client: null,
+      checkoutPayload: null,
       clients: []
     }
   },
@@ -78,8 +80,6 @@ export default {
     async loadClients () {
       const query = /* GraphQL */`query {
         clients: account_client {
-          value: client_id
-          label: business_name
           client_id
           business_name
           tax_identification_number
@@ -100,9 +100,16 @@ export default {
     },
     async checkout () {
       try {
+        this.loading = true
 
+        const checkoutPayload = await this.$api.post('/store/checkout', { client_id: this.client.client_id })
+
+        this.checkoutPayload = checkoutPayload
+        console.log(checkoutPayload)
       } catch (error) {
         this.$api.handleError(error)
+      } finally {
+        this.loading = false
       }
     }
   },
