@@ -23,7 +23,7 @@
         </q-stepper-navigation>
       </q-step>
       <q-step :name="2" title="Facturacion">
-        Datos de facturacion
+        Datos de facturacion (opcional si no required factura con NIT)
         <q-select :loading="loading" :options="clients" v-model="client" label="NIT & Razon Social">
           <template v-slot:append>
             <create-client icon="mdi-account-plus" flat dense @done="clientCreated">
@@ -33,7 +33,7 @@
         </q-select>
         <q-stepper-navigation align="right" class="q-gutter-x-md">
           <q-btn flat color="primary" @click="step--" label="Volver"/>
-          <q-btn @click="step++" color="primary" label="Siguiente"  :disable="!client"/>
+          <q-btn @click="step++" color="primary" :label="client ? 'Siguiente' : 'Omitir'"/>
         </q-stepper-navigation>
       </q-step>
       <q-step :name="3" title="Finalizar">
@@ -102,7 +102,7 @@ export default {
       try {
         this.loading = true
 
-        const checkoutPayload = await this.$api.post('/store/checkout', { client_id: this.client.client_id })
+        const checkoutPayload = await this.$api.post('/store/checkout', { client_id: this.client ? this.client.client_id : null })
 
         this.checkoutPayload = checkoutPayload
         console.log(checkoutPayload)

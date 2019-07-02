@@ -25,18 +25,18 @@ export async function loadCart ({ commit }) {
             }
             quantity
             price
-            lifetime {
-              i18n(where: { locale_id: { _eq: "es" } }) {
-                name
-                description
-              }
-              start
-              end
-              lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
-                weekday {
-                  i18n(where: { locale_id: { _eq: "es" } }) {
-                    name
-                  }
+          }
+          lifetime {
+            i18n(where: { locale_id: { _eq: "es" } }) {
+              name
+              description
+            }
+            start
+            end
+            lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
+              weekday {
+                i18n(where: { locale_id: { _eq: "es" } }) {
+                  name
                 }
               }
             }

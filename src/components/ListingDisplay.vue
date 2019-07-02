@@ -42,7 +42,6 @@
                 <div class="text-caption">
                   {{$i18n(product.product, 'description')}}
                 </div>
-                <lifetime-display :lifetime="product.lifetime"></lifetime-display>
               </td>
               <td class="text-right text-no-wrap">Bs {{(product.price / 100).toFixed(2)}}</td>
               <td class="text-right text-no-wrap">{{product.quantity}}</td>
@@ -50,6 +49,7 @@
             </tr>
           </tbody>
         </q-markup-table>
+        <lifetime-display :lifetime="listing.lifetime"></lifetime-display>
       </q-expansion-item>
     </q-card-section>
     <slot name="footer"/>

@@ -63,18 +63,18 @@ export default {
               }
               quantity
               price
-              lifetime {
-                start
-                end
-                i18n (where: { locale_id: { _eq: "es" } }) {
-                  name
-                  description
-                }
-                lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
-                  weekday {
-                    i18n (where: { locale_id: { _eq: "es" } }) {
-                      name
-                    }
+            }
+            lifetime {
+              start
+              end
+              i18n (where: { locale_id: { _eq: "es" } }) {
+                name
+                description
+              }
+              lifetime_weekdays (order_by: [{weekday: { weekday_id: asc } }]) {
+                weekday {
+                  i18n (where: { locale_id: { _eq: "es" } }) {
+                    name
                   }
                 }
               }
