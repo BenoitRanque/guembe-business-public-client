@@ -38,7 +38,6 @@
       </q-step>
       <q-step :name="3" title="Finalizar">
         finish
-        <pre>{{checkoutPayload}}</pre>
         <q-stepper-navigation align="right" class="q-gutter-x-md">
           <q-btn flat color="primary" @click="step--" label="Volver"/>
           <q-btn @click="checkout" color="primary" label="Finalizar" />
@@ -60,7 +59,6 @@ export default {
       step: 0,
       loading: false,
       client: null,
-      checkoutPayload: null,
       clients: []
     }
   },
@@ -102,10 +100,19 @@ export default {
       try {
         this.loading = true
 
-        const checkoutPayload = await this.$api.post('/store/checkout', { client_id: this.client ? this.client.client_id : null })
+        const {
+          data: {
+            // sale_id,
+            sale_payment: {
+              payment: {
+                khipu_app_url,
+                khipu_payment_url
+              }
+            }
+          }
+        } = await this.$api.post('/store/checkout', { client_id: this.client ? this.client.client_id : null })
 
-        this.checkoutPayload = checkoutPayload
-        console.log(checkoutPayload)
+        window.location.href = this.$q.platform.is.mobile ? khipu_app_url : khipu_payment_url
       } catch (error) {
         this.$api.handleError(error)
       } finally {

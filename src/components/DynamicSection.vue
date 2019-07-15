@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section :class="section.fullwidth ? 'q-mb-md' : 'section-maxwidth q-mx-auto q-px-md q-my-md'">
     <slot name="editor" />
     <div class="row wrap q-col-gutter-md">
       <slot />
@@ -18,3 +18,8 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus">
+  .section-maxwidth
+    max-width 992px
+</style>

@@ -18,6 +18,7 @@
           Biocentro Guembe
         </q-toolbar-title>
 
+        <!-- remove for testing -->
         <q-separator vertical inset />
         <template v-if="isAuthenticated">
           <q-btn-dropdown
@@ -41,13 +42,31 @@
                   Carrito
                 </q-item-section>
               </q-item>
-              <q-item to="/purchases">
+              <q-item to="/webstore/sales">
+                <q-item-section side>
+                  <q-icon name="mdi-shopping">
+                  </q-icon>
+                </q-item-section>
+                <q-item-section>
+                  Compras
+                </q-item-section>
+              </q-item>
+              <q-item to="/webstore/vouchers">
                 <q-item-section side>
                   <q-icon name="mdi-receipt">
                   </q-icon>
                 </q-item-section>
                 <q-item-section>
-                  Compras
+                  Vouchers
+                </q-item-section>
+              </q-item>
+              <q-item clickable @click="showClientTokenDialog = true">
+                <q-item-section side>
+                  <q-icon name="mdi-qrcode">
+                  </q-icon>
+                </q-item-section>
+                <q-item-section>
+                  Token Cliente
                 </q-item-section>
               </q-item>
               <q-separator></q-separator>
@@ -65,40 +84,6 @@
         <template v-else>
           <q-btn-dropdown flat stretch label="Iniciar Session" auto-close>
             <client-authentication></client-authentication>
-            <!-- <q-list>
-              <q-item-label header>
-                Opciones de inicio de session
-              </q-item-label>
-              <q-item>
-                <q-item-section>
-                  <q-btn
-                    class="full-width"
-                    @click="authenticate({ provider: 'google' })"
-                    color="red"
-                    no-wrap
-                    no-caps
-                  >
-                    <q-icon name="mdi-google" size="1.2em" left></q-icon>
-                    Iniciar Session Con Google
-                  </q-btn>
-                </q-item-section>
-              </q-item>
-              <q-separator></q-separator>
-              <q-item>
-                <q-item-section>
-                  <q-btn
-                    class="full-width"
-                    @click="authenticate({ provider: 'facebook' })"
-                    color="blue"
-                    no-wrap
-                    no-caps
-                  >
-                    <q-icon name="mdi-facebook" size="1.2em" left></q-icon>
-                    Iniciar Session Con Facebook
-                  </q-btn>
-                </q-item-section>
-              </q-item>
-            </q-list> -->
           </q-btn-dropdown>
         </template>
       </q-toolbar>
@@ -112,32 +97,19 @@
 
     <q-dialog v-model="showLoginDialog">
       <client-authentication></client-authentication>
-      <!-- <q-card>
+    </q-dialog>
+
+    <q-dialog v-model="showClientTokenDialog">
+      <q-card>
+        <q-bar>
+          Token Cliente
+          <q-space></q-space>
+          <q-btn dense icon="mdi-close" v-close-popup flat></q-btn>
+        </q-bar>
         <q-card-section>
-          <div class="text-h6 text-center">
-            Bienvenido
-          </div>
-          <div class="text-subtitle2 text-center">
-            Por favor inicia session
-          </div>
+          <client-token></client-token>
         </q-card-section>
-        <q-card-section>
-          <q-btn
-            class="full-width"
-            @click="authenticate({ provider: 'google' })"
-            color="red"
-            icon="mdi-google"
-          >Iniciar Session Con Google</q-btn>
-        </q-card-section>
-        <q-card-section>
-          <q-btn
-            class="full-width"
-            @click="authenticate({ provider: 'facebook' })"
-            color="blue"
-            icon="mdi-facebook"
-          >Iniciar Session Con Facebook</q-btn>
-        </q-card-section>
-      </q-card> -->
+      </q-card>
     </q-dialog>
   </q-layout>
 </template>
@@ -145,14 +117,17 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ClientAuthentication from 'components/ClientAuthentication'
+import ClientToken from 'components/ClientToken'
 export default {
   name: 'ClientLayout',
   components: {
-    ClientAuthentication
+    ClientAuthentication,
+    ClientToken
   },
   data () {
     return {
-      showLoginDialog: false
+      showLoginDialog: false,
+      showClientTokenDialog: false
     }
   },
   computed: {

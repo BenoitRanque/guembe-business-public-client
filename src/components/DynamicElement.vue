@@ -1,6 +1,6 @@
 <template>
-  <div :class="elementClass">
-    <q-card class="overflow-hidden rounded-borders">
+  <div :class="elementClass" class="no-shadow">
+    <q-card :class="card ? 'overflow-hidden rounded-borders' : 'no-shadow'">
       <slot name="editor"></slot>
       <div :class="{ 'cursor-pointer': hasLink }" @click="handleClick">
         <q-img
@@ -32,6 +32,10 @@ import { openURL } from 'quasar'
 export default {
   name: 'DynamicElement',
   props: {
+    card: {
+      type: Boolean,
+      default: true
+    },
     element: {
       type: Object,
       required: true
@@ -72,7 +76,7 @@ export default {
       } else if (this.element.external_link !== null) {
         openURL(this.element.external_link)
       } else if (this.element.listing_link !== null) {
-        this.$router.push(`/listing/${this.element.listing_link}`)
+        this.$router.push(`/webstore/listing/${this.element.listing_link}`)
       }
     }
   }

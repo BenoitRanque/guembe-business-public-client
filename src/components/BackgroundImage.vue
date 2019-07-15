@@ -2,6 +2,7 @@
   <q-img
     v-if="image"
     class="fixed-top-left fixed-bottom-right"
+    style="opacity: 0.5"
     :src="$img.src(image.image_id)"
     :srcset="$img.srcset(image)"
     :placeholder="image.placeholder"

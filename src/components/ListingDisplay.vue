@@ -49,7 +49,14 @@
             </tr>
           </tbody>
         </q-markup-table>
-        <lifetime-display :lifetime="listing.lifetime"></lifetime-display>
+        <div class="q-px-md">
+          <!-- <lifetime-display :lifetime="listing.lifetime"></lifetime-display> -->
+        </div>
+      </q-expansion-item>
+      <q-expansion-item label="Vigencia">
+        <div class="q-px-md">
+          <lifetime :lifetime="listing.lifetime"></lifetime>
+        </div>
       </q-expansion-item>
     </q-card-section>
     <slot name="footer"/>
@@ -57,12 +64,14 @@
 </template>
 
 <script>
-import LifetimeDisplay from 'components/LifetimeDisplay'
+// import LifetimeDisplay from 'components/LifetimeDisplay'
+import Lifetime from 'components/Lifetime'
 
 export default {
   name: 'ListingDisplay',
   components: {
-    LifetimeDisplay
+    // LifetimeDisplay
+    Lifetime
   },
   props: {
     listing: {

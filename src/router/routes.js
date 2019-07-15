@@ -7,20 +7,18 @@ const routes = [
       // { name: 'OAuthSuccessCallback', path: 'OAuthSuccessCallback', component: () => import('pages/OAuthCallback.vue') },
       // { name: 'OAuthFailureCallback', path: 'OAuthFailureCallback', component: () => import('pages/OAuthCallback.vue') },
       // props: true means listing id will be passed as a prop to the component
-      { path: 'webstore', redirect: '/webstore/listings' },
       { path: 'webstore/listing/:ListingId', props: true, component: () => import('pages/Listing.vue') },
-      { path: 'webstore/listings', component: () => import('pages/Listings.vue') },
+      { path: 'webstore/listings', alias: 'webstore', component: () => import('pages/Listings.vue') },
       { path: 'webstore/cart', component: () => import('pages/Cart.vue'), meta: { requireAuthentication: true } },
       { path: 'webstore/checkout', component: () => import('pages/Checkout.vue'), meta: { requireAuthentication: true } },
       { path: 'webstore/sale/:SaleId', props: true, component: () => import('pages/Sale.vue'), meta: { requireAuthentication: true } },
       { path: 'webstore/sales', component: () => import('pages/Sales.vue'), meta: { requireAuthentication: true } },
+      { path: 'webstore/vouchers', component: () => import('pages/Vouchers.vue'), meta: { requireAuthentication: true } },
 
       // { path: 'webstore/purchase/:PurchaseId', props: true, component: () => import('pages/Purchase.vue'), meta: { requireAuthentication: true } },
       // { path: 'webstore/purchases', component: () => import('pages/Purchases.vue'), meta: { requireAuthentication: true } },
-
-      { path: '', redirect: '/website' },
       {
-        path: 'website/:path(.*)?',
+        path: ':path([A-Za-z0-9_/]*)?',
         props: { default: true, background: true },
         components: {
           default: () => import('pages/DynamicWebsite.vue'),

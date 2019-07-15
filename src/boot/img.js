@@ -1,4 +1,4 @@
-const baseURL = 'https://chuturubi.com'
+const baseURL = process.env.DEV ? 'https://chuturubi.com' : ''
 function src (image_id, size = 'xl') {
   return `${baseURL}/uploads/image/${image_id}.${size}.jpg`
 }

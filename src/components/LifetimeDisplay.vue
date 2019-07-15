@@ -15,9 +15,12 @@
           {{$i18n(lifetime, 'description')}}
         </q-card-section>
         <q-card-section>
-          {{lifetime.start}}
+          {{lifetime.start.replace(/^(\d+)-(\d+)-(\d+)$/g, '$3/$2/$1')}}
           -
-          {{lifetime.end}}
+          {{lifetime.end.replace(/^(\d+)-(\d+)-(\d+)$/g, '$3/$2/$1')}}
+        </q-card-section>
+        <q-card-section>
+          <q-checkbox readonly label="Incluye Feriados" :value="lifetime"></q-checkbox>
         </q-card-section>
         <q-card-section>
           {{lifetime.lifetime_weekdays.map(({ weekday }) => this.$i18n(weekday, 'name')).join(', ')}}
@@ -28,6 +31,8 @@
 </template>
 
 <script>
+import { date } from 'quasar'
+const { formatDate } = date
 export default {
   name: 'LifetimeDisplay',
   props: {
@@ -40,6 +45,9 @@ export default {
     return {
       show: false
     }
+  },
+  methods: {
+    formatDate
   }
 }
 </script>

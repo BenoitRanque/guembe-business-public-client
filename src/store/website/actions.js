@@ -13,6 +13,7 @@ export async function LOAD_PAGE ({ commit, state }, { path = '' } = { path: null
       sections (order_by: { index: asc }) {
         section_id
         index
+        fullwidth
         elements (order_by: { index: asc }) {
           element_id
           index
